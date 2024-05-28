@@ -109,6 +109,17 @@ aside .course:hover .subCourse {
   max-height: 500px;
   opacity: 1;
 }
+.table-container {
+  display: flex;
+  justify-content: safe;
+}
+.table-container table {
+  width: 15%; /* Adjust the width as needed */
+  margin-right: 10px;
+}
+.table-wrapper{
+  max-width: 15%;
+}
 
 main {
   flex: 1;

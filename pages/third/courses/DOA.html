@@ -949,8 +949,8 @@ private:
   // helper functions
   // for 0 indexing
   int parent(int i) { return (i - 1) / 2; }
-  int left(int i) { return i * 2 + 1; }
-  int right(int i) { return i * 2 + 2; }
+  int left(int i) { return i * 2; }
+  int right(int i) { return i * 2 + 1; }
 
 public:
   bool isEmpty() const { return heap.empty(); } // is the heap empty?
@@ -1143,7 +1143,7 @@ template &lt;typename T&gt; T findMedian(MaxHeap&lt;T&gt; &heap) {
   int origSize = heap.size();
   std::vector&lt;T&gt; tempStorage;
 
-  // extract N/2 to find median
+  // extract N/2 to find median LIFO
   for (int i = 0; i &lt; (origSize + 1) / 2; ++i) {
     tempStorage.push_back(heap.deleteMax());
   }
@@ -1167,7 +1167,152 @@ template &lt;typename T&gt; T findMedian(MaxHeap&lt;T&gt; &heap) {
   return median;
 }
                   </code></pre>
+                  <p>The median is the value seperating the higher 
+                    half from the lower half. It may be thought of as the "middle" value
+                    in a dataset. It is not the average or the mean.
+                    The median in a dataset depends on, rather theres an even amount of data,
+                    or an uneven amount. <br>
+                    If there's an odd number of observations, the middle
+                    one is selected. <br>
+                    An example with odd number of observations:<br> 1, 3, 3, <strong>6</strong>, 7, 8, 9
+                    <br>If there's an even number of observations, there is no distinct middle
+                    value, and therefore, the median is the arithmetic mean of the two
+                    middle values.<br>
+                    An example with even number of observations: <br>1, 2, 3, <strong>4</strong>, <strong>5</strong>, 6, 8, 9<br>
+                    Here the median would be <em>4.5</em>, since this is the mean of 4+5 ((4+5)/2).
+                  </p>
                   </div>
+                  <div>
+                    <h3>Hashing question</h3>
+                    <p>Consider the following hash function: <em>hash(x) =x % N</em> 
+                      where N
+                      denotes the
+                     size of the array used to store the elements of the hash-table.
+                     Consider the following open-address hash table, where the elements 
+                     14,12,6
+                     have already been inserted using hash function:
+                     </p><div class="table-container">
+                     <div class="table-wrapper">
+                      <p>Given hash-table</p><p></p><p></p>
+                      <table border="1">
+                      <tr>
+                        <td>Index</td>
+                        <td>Element</td>
+                      </tr>
+                      <tr>
+                        <td>0</td>
+                        <td>14</td>
+                      </tr>
+                      <tr><td>1</td>
+                      <td></td></tr>
+                      <tr><td>2</td>
+                      <td></td></tr>
+                      <tr><td>3</td>
+                      <td></td></tr>
+                      <tr><td>4</td>
+                      <td></td></tr>
+                      <tr><td>5</td>
+                      <td>12</td></tr>
+                      <tr><td>6</td>
+                      <td>6</td></tr>
+                     </table>
+                     </div>
+                     <div class="table-wrapper">
+                      <p>First two inserts<br>before rehash</p>
+                     <table border="1">
+                      <tr>
+                        <td>Index</td>
+                        <td>Element</td>
+                      </tr>
+                      <tr>
+                        <td>0</td>
+                        <td>14</td>
+                      </tr>
+                      <tr><td>1</td>
+                      <td></td></tr>
+                      <tr><td>2</td>
+                      <td>27</td></tr>
+                      <tr><td>3</td>
+                      <td>10</td></tr>
+                      <tr><td>4</td>
+                      <td></td></tr>
+                      <tr><td>5</td>
+                      <td>12</td></tr>
+                      <tr><td>6</td>
+                      <td>6</td></tr>
+                     </table>
+                     </div>
+                     <div class="table-wrapper">
+                      <p>First part of<br>new table</p>
+                     <table border="1">
+                      <tr>
+                        <td>Index</td>
+                        <td>Element</td>
+                      </tr>
+                      <tr>
+                        <td>0</td>
+                        <td></td>
+                      </tr>
+                      <tr><td>1</td>
+                      <td></td></tr>
+                      <tr><td>2</td>
+                      <td></td></tr>
+                      <tr><td>3</td>
+                      <td></td></tr>
+                      <tr><td>4</td>
+                      <td></td></tr>
+                      <tr><td>5</td>
+                      <td></td></tr>
+                      <tr><td>6</td>
+                      <td>6</td></tr><tr><td>7</td>
+                        <td></td></tr>
+                     </table>  
+                     </div>
+                     <div class="table-wrapper">
+                      <p>Second part of<br>new table</p>
+                     <table border="1">
+                      <tr><td>Index</td>
+                      <td>Element</td></tr>
+                      
+                      <tr><td>8</td>
+                      <td></td></tr>
+                      <tr><td>9</td>
+                      <td></td></tr>
+                      <tr><td>10</td>
+                      <td>27</td></tr>
+                      <tr><td>11</td>
+                      <td>10</td></tr>
+                      <tr><td>12</td>
+                      <td>12</td></tr>
+                      <tr><td>13</td>
+                      <td>13</td></tr>
+                      <tr><td>14</td>
+                      <td>14</td></tr>
+                      <tr><td>15</td>
+                      <td>11</td></tr>
+                      <tr><td>16</td>
+                      <td></td></tr></table>
+                      </div>
+                     </div>
+                     <p>Draw the evolution of the hash table, when the following elements are
+                      inserted using the hash function and quadratic-probing: 
+                      10,27,11,13
+                      .</p>
+                      <p>The <em>tableSize</em> is 7, therefore the hashing function is <strong>x % 7</strong>
+                      . For 10, this equals 3. Since we need to rehash when we have 5 elements stored in the array
+                    We dont need to do this now. This is because 70% * 7/100 = 4.9 which is the amount of
+                  elements that fills this table to 70%.<br>
+                27 % 7 = 6 but there's already an element at index 6. Therefore we need quadratic probing.
+              First we use 1<sup>2</sup>, but theres also an element at index 0. 2<sup>2</sup> = 4, but theres already an element at index 3, where this would be.
+            3<sup>2</sup> = 9, going 9 steps, you land at the empty index 2.<br>Now the table looks like this and needs to be resized and rehashed
+            since we have 5 elemnts and it is filled more than 70%: </p>
+            
+             <p>We find the next prime number after 7*2 which is 17 and rehash the values in the old table with the new table of size 17.
+              After we put in the last elements which are 11 and 13. 11 would get the index 15 since index 11 and 12 are occupied.
+              13 would get the index 13. The iterations can be seen above.
+             </p>
+               
+            </div>
                 </div>
               </div>
             </div>
