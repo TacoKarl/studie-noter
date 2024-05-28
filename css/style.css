@@ -86,6 +86,11 @@ aside {
   border-bottom-right-radius: 5px;
 }
 
+#aFormat {
+  color: blue;
+  text-decoration-line: underline;
+}
+
 aside a {
   display: block;
   padding: 5px;
