@@ -368,13 +368,78 @@
               <div id="hashing">
                 <h3 id="hashing">Hashing</h3>
                 <p>
-                  There are different tyoes if hashing, that if a spot is
+                  There are different types if hashing, that if a spot is
                   occupied, has different logic of how to find an unoccupied
                   spot. Usually, hashtables has sizes of prime numbers, since
                   you use the modulus operator (%) and if you have a number that
                   is not a prime number, more numbers would fit the equation
-                  <strong>num % size == 0</strong>.
+                  <strong>num % size == 0</strong>. <br />
+                  The general idea of hashing is storing an element in an array
+                  with a <strong>key</strong>. The key is used to then retrieve
+                  the element when you need it. Generally you go from index 0 to
+                  <em>tableSize - 1</em>, so from the first element to the last.
+                  For a more thorough explenation, see Chapter 5 in Data
+                  Structures and Algorithm Analysis in C++.<br />
+                  If you use integers as the key, a simple way to hash the
+                  element would be <em>key % tableSize</em>. This is the reason
+                  to use primes, to not store 10 and 20 together as an example.
                 </p>
+                <p>Different kinds of probing include:</p>
+                <ul>
+                  <li>
+                    Linear probing
+                    <ul>
+                      <li>
+                        If the index already is occupied, find the next
+                        unoccupied index to store the key. (increment by 1 until
+                        an empty space is found)
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    Quadratic probing
+                    <ul>
+                      <li>
+                        If a collision appears, you start with i = 1 and go up
+                        until you find an empty space with the formula i<sup
+                          >2</sup
+                        >
+                      </li>
+                      <li>1<sup>2</sup>, 2<sup>2</sup>, 3<sup>2</sup>...</li>
+                    </ul>
+                  </li>
+                  <li>
+                    Double hashing
+                    <ul>
+                      <li>
+                        This is the use of another hash function, so you have
+                        two hash functions
+                      </li>
+                      <li>
+                        If hash(x) results in a collision, then you use
+                        i*hash<sub>2</sub>(x)
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    Random probing
+                    <ul>
+                      <li>
+                        Uses a random number generator initialized with the key.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    Secondary clustering
+                    <ul>
+                      <li>
+                        Is an issue with quadradic probing where two different
+                        values, follow the same probing sequence
+                      </li>
+                      <li>The last two aren't covered in the book</li>
+                    </ul>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
