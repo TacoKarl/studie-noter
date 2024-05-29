@@ -97,7 +97,8 @@
         <div class="topics">
           <p class="instructions">
             Scroll down or hover over the course to see what topics you can read
-            about
+            about. <br />All the slides from the classes can be seen
+            <a id="aFormat" href="pdf/DOA.html">here</a>.
           </p>
           <h2 id="searching">Searching</h2>
           <div class="leftRight">
@@ -107,9 +108,42 @@
                 BFS, also called Breadth-first search, finds the shortest path
                 to target in an unweighted graph. It searches in all direction
                 regardless of cost or proximity to the target. It uses a
-                priority queue (FIFO).
+                priority queue (FIFO). It explores all the neighbouring nodes
+                from the current level before moving on to the next level. A
+                quick overview on how BFS works:
               </p>
-
+              <ol>
+                <li><strong>Initialization</strong></li>
+                <ul>
+                  <li>Begins with a start node</li>
+                  <li>
+                    Use a queue to keep track of nodes that need to be explored
+                  </li>
+                  <li>
+                    Maintains a set or a list to keep track of already visited
+                    nodes, to avoid exploring nodes more than once
+                  </li>
+                </ul>
+                <li><strong>Algorithm steps</strong></li>
+                <ul>
+                  <li>Enqueue the start node and mark it as visited</li>
+                  <li>While queue is not empty</li>
+                  <ul>
+                    <li>Dequeue a node from the front of the queue</li>
+                    <li>
+                      Process the dequeued node (i.e. check if it is the
+                      target.)
+                    </li>
+                    <li>
+                      Enqueue all unvisited neghbouring nodes of the duqueued
+                      node and mark them as visited
+                    </li>
+                  </ul>
+                </ul>
+              </ol>
+              <p>
+                This algorithm finds the shortest path in an unweighted graph.
+              </p>
               <h3 id="dijkstrasAlgorithm">Dijkstras algorithm</h3>
             </div>
             <div class="right">
@@ -148,7 +182,9 @@
               </ul>
               <p>
                 This process continues until the target node is found or all
-                possible nodes have been explored.<br />
+                possible nodes have been explored. Also note, that you keep
+                track on which node you used to come to the current node for
+                backtracking.<br />
                 You can download the code for assignment week 9-10 which covers
                 some of these search patterns
                 <a id="aFormat" href="code/aflevering.zip" download>here</a>.
