@@ -145,6 +145,60 @@
                 This algorithm finds the shortest path in an unweighted graph.
               </p>
               <h3 id="dijkstrasAlgorithm">Dijkstras algorithm</h3>
+              <p>
+                Dijkstras algorithm solves the shortest path problem in a
+                weighted graph, with non-negative weights. It computes the
+                shortest distance from a source node to all other nodes in the
+                graph. It starts by setting the distance from the source node to
+                all other nodes to infinity (&infin;), and then updates if a
+                "shorter" path is found. This is call relaxation.<br />
+                A quick overview of this algorithm:
+              </p>
+              <ol>
+                <li><strong>Initialization</strong></li>
+                <ul>
+                  <li>
+                    Assign a tentative distance value to every node: Set it to 0
+                    for the initial node and to &infin; for all other nodes
+                  </li>
+                  <li>Set the initial node to the current node</li>
+                  <li>
+                    Create a priority queue to hold nodes, prioritized by their
+                    tentative distance values
+                  </li>
+                </ul>
+                <li><strong>Algorithm steps</strong></li>
+                <ul>
+                  <li>While there are unvisited nodes:</li>
+                  <ul>
+                    <li>
+                      Extract the node with the smallest tentative value
+                      (labeled <em>u</em>)
+                    </li>
+                    <li>For eachj neighbour <em>v</em> in <em>u</em></li>
+                    <ul>
+                      <li>
+                        Calculate the alternative path distance from the start
+                        node to <em>v</em> through <em>u</em>
+                      </li>
+                      <li>
+                        If this alternative path distance is smaller than the
+                        current tentative distance of <em>v</em>, update the
+                        tentative distance of <em>v</em>
+                      </li>
+                      <li>
+                        If <em>v</em> has not been visited, add it to the
+                        priority queue
+                      </li>
+                    </ul>
+                    <li>Mark the node <em>u</em> as visited</li>
+                    <li>
+                      If the smallest tentative distance among the unvisited
+                      notes are &infin;, stop (Remaining nodes areinaccessible)
+                    </li>
+                  </ul>
+                </ul>
+              </ol>
             </div>
             <div class="right">
               <h3 id="a*">The A* algorithm</h3>
