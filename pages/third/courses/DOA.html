@@ -100,17 +100,61 @@
             about
           </p>
           <h2 id="searching">Searching</h2>
-          <div>
-            <h3 id="bfs">BFS (Breadth-first Search)</h3>
-            <p>
-              BFS, also called Breadth-first search, finds the shortest path to
-              target in an unweighted graph. It searches in all direction
-              regardless of cost or proximity to the target. It uses a priority
-              queue (FIFO).
-            </p>
+          <div class="leftRight">
+            <div class="left">
+              <h3 id="bfs">BFS (Breadth-first Search)</h3>
+              <p>
+                BFS, also called Breadth-first search, finds the shortest path
+                to target in an unweighted graph. It searches in all direction
+                regardless of cost or proximity to the target. It uses a
+                priority queue (FIFO).
+              </p>
+
+              <h3 id="dijkstrasAlgorithm">Dijkstras algorithm</h3>
+            </div>
+            <div class="right">
+              <h3 id="a*">The A* algorithm</h3>
+              <p>
+                A* is an algorithm that is direction based. It still uses a
+                priority queue and uses three parameters. How many steps from
+                start, How many steps to target (Ignoring walls), and a total of
+                these two. Then the smallest total gets put first in the queue.
+                If there are more squares with the same total, the next square
+                will be put in a queue behind the first square. So to
+                summarize:<br />
+                A* is a heuristic based algorithm. It uses
+                <strong><em>g(n)</em></strong> which is the cost to get from the
+                start node to the current node.<br />
+                <strong><em>h(n)</em></strong> is the heuristic estimate from
+                current node to the target node, ignoring walls.<br />
+                Lastly <strong><em>f(n)</em></strong> is the total cost of the
+                heuristic and the cost to the current node.
+                <em>f(n) = g(n) + h(n)</em>
+              </p>
+              <p>The A* algorithm works as follows</p>
+              <ul>
+                <li>
+                  Nodes are added in a priority queue with their
+                  <em>f(n)</em> value
+                </li>
+                <li>
+                  The node with the smallest <em>f(n)</em> value is dequeued
+                  first
+                </li>
+                <li>
+                  If multiple nodes have the same <em>f(n)</em> value, they are
+                  dequeued is the order they where added
+                </li>
+              </ul>
+              <p>
+                This process continues until the target node is found or all
+                possible nodes have been explored.<br />
+                You can download the code for assignment week 9-10 which covers
+                some of these search patterns
+                <a id="aFormat" href="code/aflevering.zip" download>here</a>.
+              </p>
+            </div>
           </div>
-          <h3 id="dijkstrasAlgorithm">Dijkstras algorithm</h3>
-          <h3 id="a*">The A* algorithm</h3>
           <h2 id="trees">Trees and Heaps</h2>
           <div class="leftRight">
             <div class="left">
