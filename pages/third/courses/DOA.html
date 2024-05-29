@@ -1534,6 +1534,54 @@ template &lt;typename T&gt; T findMedian(MaxHeap&lt;T&gt; &heap) {
                       can be seen above.
                     </p>
                   </div>
+                  <div id="evenOdd">
+                    <h3>Even odd function</h3>
+                    <p>
+                      An exam question is given by: Udvikl en effektiv algoritme
+                      med følgende signatur: <br />template&lt;typename T&gt;
+                      vector&lt;T&gt; partitionEvenOdd(vector&lt;T&gt;& arg){<br />
+                      //returnerer en vektor hvor alle lige elementer er før
+                      alle ulige elementer <br />}<br />Algoritmen må IKKE bruge
+                      ekstra lager (dvs du må ikke oprette ekstra vector
+                      variabler). Algoritmen skal have kompleksitet O(N), hvor N
+                      = |arg| - dette skal du argumentere for er tilfældet.
+                    </p>
+                    <p>
+                      To do this, you must use two variables to keep track of
+                      the indices, a left and a right. The left will start at
+                      index 0 and right will start at index arg.size()-1. Now
+                      you will check if the left index is even, and if this is
+                      the case, you increment left. Same with the right, just
+                      check if it is odd, and if yes, go on to the next by
+                      decrementing right. Now if the left is odd, you stay there
+                      until you find an even value on the right side, and you
+                      swap those. You do this until the left passes the
+                      right.<br />
+                      Some code that answers this question:
+                    </p>
+                    <pre><code class="cpp">
+template &lt;typename T&gt; vector&lt;T&gt; partitionEvenOdd(vector&lt;T&gt; &arg) {
+  // returnerer en vektor hvor alle lige elementer er før alle ulige elementer
+  int left = 0;
+  int right = arg.size() - 1;
+
+  while (left &lt; right) {
+    while (left &lt; right && arg[left] % 2 == 0) {
+      ++left;
+    }
+    while (left &lt; right && arg[right] % 2 != 0) {
+      --right;
+    }
+    if (left &lt; right) {
+      swap(arg[left], arg[right]);
+      ++left;
+      --right;
+    }
+  }
+  return arg;
+}
+                  </code></pre>
+                  </div>
                 </div>
               </div>
             </div>
