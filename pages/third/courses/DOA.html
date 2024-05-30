@@ -778,11 +778,82 @@ unsigned int fib(int n) {
               <h2 id="sortingh">Sorting</h2>
               <div class="leftRight">
                 <div class="left">
-                  The C++ STL already includes sorting in the form og the
-                  function
-                  <strong>void sort(Iterator begin, Iterator end)</strong>.
+                  <p>
+                    The C++ STL already includes sorting in the form og the
+                    function
+                    <strong>void sort(Iterator begin, Iterator end)</strong>.
+                    Array sorting has been covered in lecture 6, if you'd like
+                    to look at the slides. We will cover Merge sort and Quick
+                    sort in these notes.
+                  </p>
+                  <h3>Merge sort</h3>
+                  <p>
+                    Merge sort uses a principle called
+                    <strong>divide-and-conquer</strong>. Basically, youd divide
+                    the array into two. The left and the right side of the
+                    array. It can be divided into three functions. One external,
+                    that calls a function, that uses this divide-and-conquer
+                    principle, this function then merges it all together in the
+                    end.<br />
+                    It will look like this:
+                  </p>
+                  <pre><code class="cpp">
+// Merging
+template &lt;typename Comparable&gt;
+void merge(std::vector&lt;Comparable&gt;& a, std::vector&lt;Comparable&gt; tmp, 
+                  int leftPos, int rightPos, int rightEnd){
+  int leftEnd = righPos - 1;
+  int pos = leftPos;
+  int numElements = rightEnd - leftPos + 1;
+
+  while (leftPos &le; leftEnd && righPos &le; righEnd){
+    if (a[leftPos] &le; a[rightPos]){
+      tmp[pos++] = std::move(a[leftPos++]);
+    }
+    else{
+      tmp[pos++] = std::move(a[rightPos++]);
+    }
+  }
+
+  while (leftPos &le; leftEnd){ // copy the rest of the first half
+    tmp[pos++] = std::move(a[leftPos++]);
+  }
+
+  while (rightPos &le; rightEnd) { // copy the rest of the right half
+    tmp[pos++] = std::move(a[rightPos++]);
+  }
+
+  for (int i = 0; i &lt; numElements; ++i, --righEnd) { //copy tmp back
+    a[rightEnd] = std::move(tmp[rightEnd]);
+  }
+}
+template &lt;typename Comparable&gt;
+void mergeSort(std::vector&lt;Comparable&gt;& a, std::vector&lt;Comparable&gt;& tmp,
+                  int left, int right) {
+  if (left &lt; right){
+    int center = (left + right) / 2;
+    mergeSort(a, tmp, left, center);
+    mergeSort(a, tmp, center + 1, right);
+    merge(a, tmp, left, center + 1, right);
+  }
+}
+template &lt;typename Comparable&gt;
+// external function:
+void mergeSort(std::vector&lt;Comparable&gt;& a) {
+  std::vector&lt;COmparable&gt; tmp(a.size());
+  mergeSort(a, tmp, 0, a.size() - 1);
+}
+                </code></pre>
+                  <p>
+                    This successfully uses the divide-and-conquer method, by
+                    recursively dividing the array into smaller halves until
+                    there are only arrays of 1 element left, and then merges
+                    them together in the end.
+                  </p>
                 </div>
-                <div class="right"></div>
+                <div class="right">
+                  <h3>Quick sort</h3>
+                </div>
               </div>
             </div>
 
@@ -1581,6 +1652,11 @@ template &lt;typename T&gt; vector&lt;T&gt; partitionEvenOdd(vector&lt;T&gt; &ar
   return arg;
 }
                   </code></pre>
+                    <p>
+                      This fits both of the criteria of Time complexity of
+                      <em>O(n)</em> and no additional use of space. (Space
+                      complexity of <em>O(1)</em>)
+                    </p>
                   </div>
                 </div>
               </div>
