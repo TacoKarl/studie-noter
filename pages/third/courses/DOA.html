@@ -856,6 +856,95 @@ void mergeSort(std::vector&lt;Comparable&gt;& a) {
                 </div>
                 <div class="right">
                   <h3>Quick sort</h3>
+                  <p>
+                    Quick sort is covered in chapter 7.7 in the book Data
+                    Structures and Algorithm Analysis in C++.<br />
+                    Like merge sort, quick sort is also a divide-and-conquer
+                    recursive algorithm. You have 3 'groups', and you create
+                    them by arbitrarily chosing an item at first. The 3 groups
+                    consists of the items equal to the chosen item, items
+                    smaller, and items larger than the chosen item. A direct
+                    implementation of quicksort can be seen below:
+                  </p>
+                  <pre><code class="cpp">
+template &lt;typename Comparable&gt;
+void SORT (std::vector&lt;Comparable&gt;& items){
+  if (items.size() &gt; 1){
+    std::vector&lt;Comparable&gt; smaller;  
+    std::vector&lt;Comparable&gt; same;
+    std::vector&lt;Comparable&gt; larger;
+
+    auto chosenItem = items[items.size() / 2];
+
+    for (auto& i : items){
+      if (i &lt; chosenItem)
+        smaller.push_back(std::move(i));
+      else if (chosenItem &lt; i)
+        larger.push_back(std::move(i));
+      else
+        same.push_back(std::move(i));
+    }
+
+    SORT(smaller); // recursive call
+    SORT(larger); // recursive call
+
+    std::move(begin(smaller), end(smaller), begin(items));
+    std::move(begin(same), end(same), begin(items) + smaller.size());
+    std::move(begin(larger), end(larger), end(items) - larger.size());
+  }
+}
+                </code></pre>
+                  <p>
+                    But this is not a complete quicksort, allthough this works,
+                    the implementation of quicksort looks similar to mergesort.
+                    Having an external function, that calls another function. It
+                    will looke like below:
+                  </p>
+                  <pre><code class="cpp">
+template &lt;typename Comparable&gt;
+void quickSort(std::vector&lt;Comparable&gt;& a){
+  quickSort(a, 0, a.size() - 1);
+}
+
+template &lt;typename Comparable&gt;
+void quickSort(std::vector&lt;Comparable&gt; a, int left, int right){
+  if (left + 10 &le; right){
+    const Comparable pivot = median3 (a, left, right);
+    
+    int i = left, j = right - 1;
+    for (; ;){
+      while (a[++i] &lt; pivot){}
+      while (pivot &lt; a[--j]) {}
+      if (i &lt; j){
+        std::swap(a[i],a[j]);
+      } 
+      else{
+        break;
+      }
+    }
+    std::swap(a[i],a[right-1]);
+
+    quickSort(a, left, i-1);
+    quickSort(a, i+1, right);
+  }
+  else {
+    insertionSort(a, left, right);
+  }
+}
+template &lt;typename Comparable&gt;
+const Comparable & median3(std::vector&lt;Comparable&gt; a, int left, int right){
+  int center = (left + right) / 2;
+  if (a[center] &lt; a[left])
+    std::swap(a[left], a[center]);
+  if (a[right] &lt; a[left])
+    std::swap(a[left], a[right]);
+  if (a[right] &lt; a[center])
+    std::swap(a[center], a[right]);
+
+  std::swap(a[center], a[right - 1]);
+  return a[right - 1];
+}
+                </code></pre>
                 </div>
               </div>
             </div>
