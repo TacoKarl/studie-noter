@@ -98,7 +98,7 @@
             Scroll down or hover over the course to see what topics you can read
             about. These are the topics/subjects from the oral exam pdf.
           </p>
-          <h2 id="os">Programmming in relation to the OS and Kernel</h2>
+          <h2 id="osKernel">Programmming in relation to the OS and Kernel</h2>
           <div class="leftRight">
             <div class="left">
               <h3>Processes and threads</h3>
@@ -138,38 +138,85 @@
                 <li><strong>Locks</strong>: Bruges til at kontrollere adgangen til delt date og forhindre race condictions</li>
               </ul>
               <h3>Process anatomy</h3>
+
             </div>
             <div class="right">
               <h3>Virtual Memory</h3>
               <h3>Threads being executed on CPU, the associated scheduler & cache</h3>
             </div>
           </div>
-          <h2 id="programmingLinux">Synchronization and protection</h2>
+          <h2 id="sync">Synchronization and protection</h2>
           <div class="leftRight">
-            <div class="left"></div>
-            
-            <div class="right"></div>
+            <div class="left">
+            <h3>Data integrity - Concurrency challenge</h3>
+            <h3>Mutex & Sephamores</h3>
+            <h3>Mutex & Conditionals</h3>
+          </div>
+            <div class="right">
+              <h3>Producer / Consumer problem</h3>
+              <h3>Dining philosophers</h3>
+              <h3>Dead locks</h3>
+            </div>
           </div>
           <div>
             <h2 id="threads">Thread communication</h2>
             <div class="leftRight">
-              <div class="left"></div>
-              <div class="right"></div>
+              <div class="left">
+                <h3>The challenges performing intra-process communication</h3>
+                <h3>Message queue</h3>
+                <h4>The premises for designing it</h4>
+                <h4>Various design solutions - Which one is chosen and why</h4>
+                <h4>Its design and implementation</h4>
+              </div>
+              <div class="right">
+                <h3>Impact on design/implementation between before and after message queue</h3>
+                <h3>Event driven programming</h3>
+                <h4>Basic idea</h4>
+                <h4>Reactiveness</h4>
+                <h4>Design - e.g. from sequence diagrams to code (or vice versa)</h4>
+              </div>
             </div>
-            <h2 id="synch">OS API</h2>
+            <h2 id="osApi">OS API</h2>
             <div class="leftRight">
-              <div class="left"></div>
-              <div class="right"></div>
+              <div class="left">
+                <h3>The design philosophy - Why OO and OS Api?</h3>
+                <h3>Elaborate on the challenge of building it and its currenct design</h3>
+                <h4>The PIMPL / Cheshire Cat idiom - The how and why</h4>
+                <h4>CPU / OS Architecture</h4>
+              </div>
+              <div class="right">
+                <h3>Effect on design/implementation</h3>
+                <h4>MQs (Message queues) used with pthreads contra MQ used in OO OS Api</h4>
+                <h4>RAII in use</h4>
+                <h4>Using Threads before and now</h4>
+                <h3>UML Diagrams to implementation (class and sequence) - How?</h3>
+              </div>
             </div>
-            <h2 id="comms">MDS Message Distribution system</h2>
+            <h2 id="mds">MDS Message Distribution system</h2>
             <div class="leftRight">
-              <div class="left"></div>
-              <div class="right"></div>
+              <div class="left">
+                <h3>Messaging distribution system - Why & how?</h3>
+                <h3>The PostOffice design - Why and how?</h3>
+                <h3>Decoupling achieved</h3>
+              </div>
+              <div class="right">
+                <h3>Design considerations & implementation</h3>
+                <h3>Patterns per design and in relation to the MDS and PostOffice design</h3>
+                <h4>GoF Singleton Pattern</h4>
+                <h4>GoF Observer Pattern</h4>
+                <h4>GoF Mediator Pattern</h4>
+              </div>
             </div>
-            <h2 id="osApi">Resource handling</h2>
+            <h2 id="resHandle">Resource handling</h2>
             <div class="leftRight">
-              <div class="left"></div>
-              <div class="right"></div>
+              <div class="left">
+                <h3>RAII - What and why?</h3>
+                <h3>Copy construction and the assignment operator</h3>
+              </div>
+              <div class="right">
+                <h3>What is the concept behind a Counted SmartPointer?</h3>
+                <h3>What is boost::shared_ptr&lt;&gt; and how do you use it?</h3>
+              </div>
             </div>
           </div>
         </div>
