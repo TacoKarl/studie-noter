@@ -92,20 +92,62 @@
         </div>
       </aside>
       <main>
-        <h2 id="isuTitle">Indljeret Software Udvikling</h2>
+        <h2 id="isuTitle">Indlejret Software Udvikling</h2>
         <div class="topics">
           <p class="instructions">
             Scroll down or hover over the course to see what topics you can read
             about. These are the topics/subjects from the oral exam pdf.
           </p>
-          <h2 id="os">Programs in OS and Kernel</h2>
+          <h2 id="os">Programmming in relation to the OS and Kernel</h2>
           <div class="leftRight">
-            <div class="left"></div>
-            <div class="right"></div>
+            <div class="left">
+              <h3>Processes and threads</h3>
+              <h4>Processer</h4>
+              <ul>
+                <li>En proces er et program, der kører på en computer, inklusiv den eksekverbare kode, data, ressourcer og den tilstandm det har under udførelsen.</li>
+                <li>Processer er isolerede fra hinanden, hvilket betyder at en fejl i en proces ikke påvirker andre processer.</li>
+                <li>Et par eksempler: En webbrowser, et tekstbehandlingsprogram, eller en baggrundstjeneste.</li>
+                <li>Disse er alle sammen individuelle processer, og er ikke afhængige af hinanden.</li>
+              </ul>
+              <h4>Tråde</h4>
+              <ul>
+                <li>En tråd er den mindste enhed af eskekvering inden for en proces.</li>
+                <li>En proces kan godt have flere tråde, der kører samtidig og deler den samme hukommelse og ressourcer, som vi har set i vores øvelser.</li>
+                <li>Fordelene ved tråde inkluderer muligheden for at udøre flere opgaver parallelt. Koden afvikles ikke fra top til bottom som normalt mere.</li>
+                <li>Et eksempel på dette er en webbrowser der har en tråd der håndterer UI'en, og en anden tråd der indlæser websider.</li>
+              </ul>
+              <h3>Threading model</h3>
+              <p>Der er forskellige trådmodeller, <strong>Single-threading</strong>, <strong>Multithreading</strong>, og <strong>Synchronization Mechanisms</strong></p>
+              <h4>Single-threading</h4>
+              <ul>
+                <li>Her har hver enkel proces én enkelt tråd</li>
+                <li>Det er simpelt at implementere men kan ikke udnytte multicore-processorer effektivt</li>
+                <li>Et simpelt script er et eksempel på dette</li>
+              </ul>
+              <h4>Multithreading</h4>
+              <ul>
+                <li>Hver proces kan have flere tråde</li>
+                <li>Kan køre på flere CPU cores samtidig, som øger effektiviteten og ydeevnen</li>
+                <li>Kræver synkronisering for at undgå konflikter, når trådene deler ressourcer</li>
+                <li>Et eksempel kan være en webserver, der håndterer flere forespørgsler samtidig</li>
+              </ul>
+              <h4>Synchronization Mechanisms</h4>
+              <ul>
+                <li><strong>Mutexes</strong>: Brugt til at sikre, at kun én tråd ad gangen kan få adgang til en ressource</li>
+                <li><strong>Semaphores</strong>: Kan bruges til at styre adgangen til ressourcer, der tillader flere samtidige tråde</li>
+                <li><strong>Locks</strong>: Bruges til at kontrollere adgangen til delt date og forhindre race condictions</li>
+              </ul>
+              <h3>Process anatomy</h3>
+            </div>
+            <div class="right">
+              <h3>Virtual Memory</h3>
+              <h3>Threads being executed on CPU, the associated scheduler & cache</h3>
+            </div>
           </div>
           <h2 id="programmingLinux">Synchronization and protection</h2>
           <div class="leftRight">
             <div class="left"></div>
+            
             <div class="right"></div>
           </div>
           <div>
