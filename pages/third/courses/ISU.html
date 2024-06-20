@@ -231,11 +231,76 @@
                     memory korrekt
                   </li>
                   <li>
-                    With great power comes great responsibility - Uncle Ben
+                    <q><em>With great power comes great responsibility</em></q>
+                    - Uncle Ben
                   </li>
                 </ul>
                 <li>Memory Mapping</li>
+                <ul>
+                  <li>
+                    <strong>Virtual memory</strong>: OS giver en applikation en
+                    virtuel adresseplads, som kan oversættes til fysiske
+                    adresser via MMU (Memory Management Unit)
+                  </li>
+                  <li>
+                    Memory mapping bruger <strong>file mapping</strong>. Det kan
+                    bruges til at mappe en fil direkte ind i en proces'
+                    adresseplads
+                  </li>
+                  <li>
+                    <strong>Device Mapping</strong>: Enheder kan også loades ind
+                    i processens adresseplads, hvilket gør det muligt at
+                    interagere med enheden vha. almindelige
+                    hukommelsesoperationer.
+                  </li>
+                  <li>
+                    <strong>Shared Memory</strong>: Kan bruges til at dele
+                    hukommelse mellem flere processer, hvilket er nyttigt for
+                    IPC (Inter-Process Communication).
+                  </li>
+                </ul>
                 <li>Data- kodesegment</li>
+                <ul>
+                  <li>
+                    Kode segmentet er også kendt som tekst segmentet og er den
+                    del af processens hukommelse, der indeholder den
+                    eksekverbare kode.
+                  </li>
+                  <ul>
+                    <li>Indeholder den kompilerede maskinkode af programmet</li>
+                    <li>
+                      <strong>Read-Only</strong>: Den er markeret som Read-Only
+                      for at undgå uønskede ændringer
+                    </li>
+                  </ul>
+                  <li>
+                    Data segmentet er delen af processen der indeholder globale
+                    og statiske variabler som er initialiseret at programmøren
+                    selv. Der er to dele af dette.
+                  </li>
+                  <li>Initialiseret Data segment</li>
+                  <ul>
+                    <li>
+                      Indeholder initialiserede globale og statiske variabler
+                    </li>
+                    <li>
+                      Denne del er skrivbar, i modsætning til kode segmentet, så
+                      programmet kan ændre på variablerne
+                    </li>
+                  </ul>
+                  <li>Uinitialiseret data segment</li>
+                  <ul>
+                    <li>
+                      Indeholder globale og statiske variabler, der er
+                      deklareret men ikke initialiseret af programmøren
+                    </li>
+                    <li>
+                      Disse variabler er typisk Zero-initialized af systemet når
+                      programmet starter op
+                    </li>
+                    <li>Er også skrivbar ligesom det initialiserede segment</li>
+                  </ul>
+                </ul>
               </ul>
             </div>
             <div class="right">
