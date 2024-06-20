@@ -104,54 +104,154 @@
               <h3>Processes and threads</h3>
               <h4>Processer</h4>
               <ul>
-                <li>En proces er et program, der kører på en computer, inklusiv den eksekverbare kode, data, ressourcer og den tilstandm det har under udførelsen.</li>
-                <li>Processer er isolerede fra hinanden, hvilket betyder at en fejl i en proces ikke påvirker andre processer.</li>
-                <li>Et par eksempler: En webbrowser, et tekstbehandlingsprogram, eller en baggrundstjeneste.</li>
-                <li>Disse er alle sammen individuelle processer, og er ikke afhængige af hinanden.</li>
+                <li>
+                  En proces er et program, der kører på en computer, inklusiv
+                  den eksekverbare kode, data, ressourcer og den tilstandm det
+                  har under udførelsen.
+                </li>
+                <li>
+                  Processer er isolerede fra hinanden, hvilket betyder at en
+                  fejl i en proces ikke påvirker andre processer.
+                </li>
+                <li>
+                  Et par eksempler: En webbrowser, et tekstbehandlingsprogram,
+                  eller en baggrundstjeneste.
+                </li>
+                <li>
+                  Disse er alle sammen individuelle processer, og er ikke
+                  afhængige af hinanden.
+                </li>
               </ul>
               <h4>Tråde</h4>
               <ul>
-                <li>En tråd er den mindste enhed af eskekvering inden for en proces.</li>
-                <li>En proces kan godt have flere tråde, der kører samtidig og deler den samme hukommelse og ressourcer, som vi har set i vores øvelser.</li>
-                <li>Fordelene ved tråde inkluderer muligheden for at udøre flere opgaver parallelt. Koden afvikles ikke fra top til bottom som normalt mere.</li>
-                <li>Et eksempel på dette er en webbrowser der har en tråd der håndterer UI'en, og en anden tråd der indlæser websider.</li>
+                <li>
+                  En tråd er den mindste enhed af eskekvering inden for en
+                  proces.
+                </li>
+                <li>
+                  En proces kan godt have flere tråde, der kører samtidig og
+                  deler den samme hukommelse og ressourcer, som vi har set i
+                  vores øvelser.
+                </li>
+                <li>
+                  Fordelene ved tråde inkluderer muligheden for at udøre flere
+                  opgaver parallelt. Koden afvikles ikke fra top til bottom som
+                  normalt mere.
+                </li>
+                <li>
+                  Et eksempel på dette er en webbrowser der har en tråd der
+                  håndterer UI'en, og en anden tråd der indlæser websider.
+                </li>
               </ul>
               <h3>Threading model</h3>
-              <p>Der er forskellige trådmodeller, <strong>Single-threading</strong>, <strong>Multithreading</strong>, og <strong>Synchronization Mechanisms</strong></p>
+              <p>
+                Der er forskellige trådmodeller,
+                <strong>Single-threading</strong>,
+                <strong>Multithreading</strong>, og
+                <strong>Synchronization Mechanisms</strong>
+              </p>
               <h4>Single-threading</h4>
               <ul>
                 <li>Her har hver enkel proces én enkelt tråd</li>
-                <li>Det er simpelt at implementere men kan ikke udnytte multicore-processorer effektivt</li>
+                <li>
+                  Det er simpelt at implementere men kan ikke udnytte
+                  multicore-processorer effektivt
+                </li>
                 <li>Et simpelt script er et eksempel på dette</li>
               </ul>
               <h4>Multithreading</h4>
               <ul>
                 <li>Hver proces kan have flere tråde</li>
-                <li>Kan køre på flere CPU cores samtidig, som øger effektiviteten og ydeevnen</li>
-                <li>Kræver synkronisering for at undgå konflikter, når trådene deler ressourcer</li>
-                <li>Et eksempel kan være en webserver, der håndterer flere forespørgsler samtidig</li>
+                <li>
+                  Kan køre på flere CPU cores samtidig, som øger effektiviteten
+                  og ydeevnen
+                </li>
+                <li>
+                  Kræver synkronisering for at undgå konflikter, når trådene
+                  deler ressourcer
+                </li>
+                <li>
+                  Et eksempel kan være en webserver, der håndterer flere
+                  forespørgsler samtidig
+                </li>
               </ul>
               <h4>Synchronization Mechanisms</h4>
               <ul>
-                <li><strong>Mutexes</strong>: Brugt til at sikre, at kun én tråd ad gangen kan få adgang til en ressource</li>
-                <li><strong>Semaphores</strong>: Kan bruges til at styre adgangen til ressourcer, der tillader flere samtidige tråde</li>
-                <li><strong>Locks</strong>: Bruges til at kontrollere adgangen til delt date og forhindre race condictions</li>
+                <li>
+                  <strong>Mutexes</strong>: Brugt til at sikre, at kun én tråd
+                  ad gangen kan få adgang til en ressource
+                </li>
+                <li>
+                  <strong>Semaphores</strong>: Kan bruges til at styre adgangen
+                  til ressourcer, der tillader flere samtidige tråde
+                </li>
+                <li>
+                  <strong>Locks</strong>: Bruges til at kontrollere adgangen til
+                  delt date og forhindre race condictions
+                </li>
               </ul>
               <h3>Process anatomy</h3>
-
+              <p>
+                En proces består af flere forskellige ting. Dette indebærer
+                <strong>stack</strong>, <strong>heap</strong>,
+                <strong>memory mapping</strong> og
+                <strong>Variabler og ELF</strong> (Datesegment og kodesegment).
+                <br />
+                Det er vigtigt at der er reserveret adresser til
+                <strong>Kernel space</strong>, da processer ville kunne bruge
+                nogle adresser som kernel space også vil bruge, hvis ikke der
+                var reserveret til dette. <br />
+                Det er <strong>PCB</strong>'en (Process Control Block) der
+                indeholder oplysninger om processen, såsom dens tilstand,
+                programtæller, CPU-registre og hukommelsesstyring.
+              </p>
+              <ul>
+                <li>Stack</li>
+                <ul>
+                  <li>Bruges til lokal lagring og funktionskald</li>
+                  <li>LIFO (Last In First Out)</li>
+                </ul>
+                <li>Heap</li>
+                <ul>
+                  <li>Dynamisk allokeret hukommelse</li>
+                  <li>
+                    "Free-store" (står der på slides, men hvad betyder det?
+                    &#x1F595;)
+                  </li>
+                  <li>
+                    August's bedste ven siger, at "free store" betyder at
+                    programmøren har magten over dette, og kan selv bestemme
+                    hvornår noget skal gemmes og slettes (allokere og
+                    deallokere)
+                    <br />
+                    Altså man skal manuelt stå for denne del af hukommelsen
+                  </li>
+                  <li>
+                    Denne frihed giver ansvaret til programmøren med at håndtere
+                    memory korrekt
+                  </li>
+                  <li>
+                    With great power comes great responsibility - Uncle Ben
+                  </li>
+                </ul>
+                <li>Memory Mapping</li>
+                <li>Data- kodesegment</li>
+              </ul>
             </div>
             <div class="right">
               <h3>Virtual Memory</h3>
-              <h3>Threads being executed on CPU, the associated scheduler & cache</h3>
+              <h3>
+                Threads being executed on CPU, the associated scheduler & cache
+              </h3>
             </div>
           </div>
           <h2 id="sync">Synchronization and protection</h2>
           <div class="leftRight">
             <div class="left">
-            <h3>Data integrity - Concurrency challenge</h3>
-            <h3>Mutex & Sephamores</h3>
-            <h3>Mutex & Conditionals</h3>
-          </div>
+              <h3>Data integrity - Concurrency challenge</h3>
+              <h3>Mutex & Sephamores</h3>
+              <h3>Mutex & Conditionals</h3>
+            </div>
             <div class="right">
               <h3>Producer / Consumer problem</h3>
               <h3>Dining philosophers</h3>
@@ -169,27 +269,40 @@
                 <h4>Its design and implementation</h4>
               </div>
               <div class="right">
-                <h3>Impact on design/implementation between before and after message queue</h3>
+                <h3>
+                  Impact on design/implementation between before and after
+                  message queue
+                </h3>
                 <h3>Event driven programming</h3>
                 <h4>Basic idea</h4>
                 <h4>Reactiveness</h4>
-                <h4>Design - e.g. from sequence diagrams to code (or vice versa)</h4>
+                <h4>
+                  Design - e.g. from sequence diagrams to code (or vice versa)
+                </h4>
               </div>
             </div>
             <h2 id="osApi">OS API</h2>
             <div class="leftRight">
               <div class="left">
                 <h3>The design philosophy - Why OO and OS Api?</h3>
-                <h3>Elaborate on the challenge of building it and its currenct design</h3>
+                <h3>
+                  Elaborate on the challenge of building it and its currenct
+                  design
+                </h3>
                 <h4>The PIMPL / Cheshire Cat idiom - The how and why</h4>
                 <h4>CPU / OS Architecture</h4>
               </div>
               <div class="right">
                 <h3>Effect on design/implementation</h3>
-                <h4>MQs (Message queues) used with pthreads contra MQ used in OO OS Api</h4>
+                <h4>
+                  MQs (Message queues) used with pthreads contra MQ used in OO
+                  OS Api
+                </h4>
                 <h4>RAII in use</h4>
                 <h4>Using Threads before and now</h4>
-                <h3>UML Diagrams to implementation (class and sequence) - How?</h3>
+                <h3>
+                  UML Diagrams to implementation (class and sequence) - How?
+                </h3>
               </div>
             </div>
             <h2 id="mds">MDS Message Distribution system</h2>
@@ -201,7 +314,10 @@
               </div>
               <div class="right">
                 <h3>Design considerations & implementation</h3>
-                <h3>Patterns per design and in relation to the MDS and PostOffice design</h3>
+                <h3>
+                  Patterns per design and in relation to the MDS and PostOffice
+                  design
+                </h3>
                 <h4>GoF Singleton Pattern</h4>
                 <h4>GoF Observer Pattern</h4>
                 <h4>GoF Mediator Pattern</h4>
@@ -215,7 +331,9 @@
               </div>
               <div class="right">
                 <h3>What is the concept behind a Counted SmartPointer?</h3>
-                <h3>What is boost::shared_ptr&lt;&gt; and how do you use it?</h3>
+                <h3>
+                  What is boost::shared_ptr&lt;&gt; and how do you use it?
+                </h3>
               </div>
             </div>
           </div>
