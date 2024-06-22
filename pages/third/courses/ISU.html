@@ -206,12 +206,12 @@
                 programtæller, CPU-registre og hukommelsesstyring.
               </p>
               <ul>
-                <li>Stack</li>
+                <li><strong>Stack</strong></li>
                 <ul>
                   <li>Bruges til lokal lagring og funktionskald</li>
                   <li>LIFO (Last In First Out)</li>
                 </ul>
-                <li>Heap</li>
+                <li><strong>Heap</strong></li>
                 <ul>
                   <li>Dynamisk allokeret hukommelse</li>
                   <li>
@@ -235,7 +235,7 @@
                     - Uncle Ben
                   </li>
                 </ul>
-                <li>Memory Mapping</li>
+                <li><strong>Memory Mapping</strong></li>
                 <ul>
                   <li>
                     <strong>Virtual memory</strong>: OS giver en applikation en
@@ -259,12 +259,12 @@
                     IPC (Inter-Process Communication).
                   </li>
                 </ul>
-                <li>Data- kodesegment</li>
+                <li><strong>Data- kodesegment</strong></li>
                 <ul>
                   <li>
-                    Kode segmentet er også kendt som tekst segmentet og er den
-                    del af processens hukommelse, der indeholder den
-                    eksekverbare kode.
+                    <strong>Kode segmentet</strong> er også kendt som tekst
+                    segmentet og er den del af processens hukommelse, der
+                    indeholder den eksekverbare kode.
                   </li>
                   <ul>
                     <li>Indeholder den kompilerede maskinkode af programmet</li>
@@ -274,31 +274,35 @@
                     </li>
                   </ul>
                   <li>
-                    Data segmentet er delen af processen der indeholder globale
-                    og statiske variabler som er initialiseret at programmøren
-                    selv. Der er to dele af dette.
+                    <strong>Data segmentet</strong> er delen af processen der
+                    indeholder globale og statiske variabler som er
+                    initialiseret at programmøren selv. Der er to dele af dette.
                   </li>
-                  <li>Initialiseret Data segment</li>
                   <ul>
-                    <li>
-                      Indeholder initialiserede globale og statiske variabler
-                    </li>
-                    <li>
-                      Denne del er skrivbar, i modsætning til kode segmentet, så
-                      programmet kan ændre på variablerne
-                    </li>
-                  </ul>
-                  <li>Uinitialiseret data segment</li>
-                  <ul>
-                    <li>
-                      Indeholder globale og statiske variabler, der er
-                      deklareret men ikke initialiseret af programmøren
-                    </li>
-                    <li>
-                      Disse variabler er typisk Zero-initialized af systemet når
-                      programmet starter op
-                    </li>
-                    <li>Er også skrivbar ligesom det initialiserede segment</li>
+                    <li><strong>Initialiseret Data segment</strong></li>
+                    <ul>
+                      <li>
+                        Indeholder initialiserede globale og statiske variabler
+                      </li>
+                      <li>
+                        Denne del er skrivbar, i modsætning til kode segmentet,
+                        så programmet kan ændre på variablerne
+                      </li>
+                    </ul>
+                    <li><strong>Uinitialiseret data segment</strong></li>
+                    <ul>
+                      <li>
+                        Indeholder globale og statiske variabler, der er
+                        deklareret men ikke initialiseret af programmøren
+                      </li>
+                      <li>
+                        Disse variabler er typisk Zero-initialized af systemet
+                        når programmet starter op
+                      </li>
+                      <li>
+                        Er også skrivbar ligesom det initialiserede segment
+                      </li>
+                    </ul>
                   </ul>
                 </ul>
               </ul>
