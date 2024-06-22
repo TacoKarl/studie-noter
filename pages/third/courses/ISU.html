@@ -307,40 +307,73 @@
                 </ul>
               </ul>
               <h3>Nu begynder vi</h3>
-              <p>Vi bruger <strong>POSIX lib</strong>, som har typen <em>pthread</em>. #include &lt;pthread.h&gt;<br>
-              Funktioner i dette bibliotek som vi bruger inkluderer</p>
+              <p>
+                Vi bruger <strong>POSIX lib</strong>, som har typen
+                <em>pthread</em>. #include &lt;pthread.h&gt;<br />
+                Funktioner i dette bibliotek som vi bruger inkluderer
+              </p>
               <ul>
                 <li><em>pthread_create()</em></li>
                 <li><em>pthread_join()</em></li>
                 <li><em>pthread_exit()</em></li>
-                <li><em>pthread_exit*(m.m.)</em></li>
+                <li><em>pthread_*(m.m.)</em></li>
               </ul>
             </div>
             <div class="right">
               <h3>Virtual Memory</h3>
-              <p>Virtual memory er en teknik der anvendes af operativsystemer til at udvide den tilgængelige hukkommelse ved are bruge både RAM og diskplads. Et pare nøglebegreber inden for virtual memory
-                er <strong>Paging</strong>, og <strong>Segmentering</strong>.<br>
-                Paging er hukommelsen der bliver opdelt i faste størrelser. Disse opdelinger kaldes pages.<br>
-                Segementering er hvor hukommelsen bliver opdelt i segmenter af varierende størrelse baseret på logiske afsnit af programmet.<br>
+              <p>
+                Virtual memory er en teknik der anvendes af operativsystemer til
+                at udvide den tilgængelige hukkommelse ved are bruge både RAM og
+                diskplads. Et pare nøglebegreber inden for virtual memory er
+                <strong>Paging</strong>, og <strong>Segmentering</strong>.<br />
+                Paging er hukommelsen der bliver opdelt i faste størrelser.
+                Disse opdelinger kaldes pages.<br />
+                Segementering er hvor hukommelsen bliver opdelt i segmenter af
+                varierende størrelse baseret på logiske afsnit af programmet.<br />
                 Men hvordan virker det så?
               </p>
               <ul>
-                <li>Programmer bruger virtuelle adresser, som oversættes til fysiske adresser af MMU (Memory Managemant Unit)</li>
-                <li><strong>Page tables</strong> holder styr på hvor virtuelle sider er placeret i den fysiske hukkomelse eller på disken</li>
-                <li><strong>Deman paging</strong> indlæser kun sider i RAM, når det skal bruges, hvilket sparer på hukommelsen</li>
-                <li><strong>Swapping</strong> flytter data mellem RAM og disk, når der ikke er nok RAM til at indeholde alle aktive data</li>
+                <li>
+                  Programmer bruger virtuelle adresser, som oversættes til
+                  fysiske adresser af MMU (Memory Managemant Unit)
+                </li>
+                <li>
+                  <strong>Page tables</strong> holder styr på hvor virtuelle
+                  sider er placeret i den fysiske hukkomelse eller på disken
+                </li>
+                <li>
+                  <strong>Deman paging</strong> indlæser kun sider i RAM, når
+                  det skal bruges, hvilket sparer på hukommelsen
+                </li>
+                <li>
+                  <strong>Swapping</strong> flytter data mellem RAM og disk, når
+                  der ikke er nok RAM til at indeholde alle aktive data
+                </li>
               </ul>
-              <p>Nogle fordele med virtual memory er en øget effektivitet og fleksibilitet, bedre beskyttelse og isolering af processer. <br>
-              Der er også nogle ulemper. Det kan f.eks føre til langsommere ydeevne, hvis systemet skal bytte data mellem disk og RAM ofte</p>
+              <p>
+                Nogle fordele med virtual memory er en øget effektivitet og
+                fleksibilitet, bedre beskyttelse og isolering af processer.
+                <br />
+                Der er også nogle ulemper. Det kan f.eks føre til langsommere
+                ydeevne, hvis systemet skal bytte data mellem disk og RAM ofte
+              </p>
               <h3>
                 Threads being executed on CPU, the associated scheduler & cache
               </h3>
-              <p>Threads bliver <strong>mapped for execution</strong> af scheduler som bruger en af de 3 modeller <strong>User-level threading</strong>, <strong>Kernel-level threading</strong>
-              eller <strong>Hybrid-level threading</strong>.</p>
+              <p>
+                Threads bliver <strong>mapped for execution</strong> af
+                scheduler som bruger en af de 3 modeller
+                <strong>User-level threading</strong>,
+                <strong>Kernel-level threading</strong> eller
+                <strong>Hybrid-level threading</strong>.
+              </p>
               <ul>
                 <li><strong>User-level threading</strong></li>
                 <ul>
-                  <li>Er en simpel implementation som ikke har brug for kernel support</li>
+                  <li>
+                    Er en simpel implementation som ikke har brug for kernel
+                    support
+                  </li>
                   <li>Kan ikke håndtere multicores</li>
                   <li>Single-threading</li>
                 </ul>
@@ -352,24 +385,46 @@
                 </ul>
                 <li><strong>Hybrid-level threading</strong></li>
                 <ul>
-                  <li>En kompleks implementation der kombinere de to ovenstående metoder</li>
-                  <li>Kræver god koordination mellem user space og kernel space scheduler</li>
+                  <li>
+                    En kompleks implementation der kombinere de to ovenstående
+                    metoder
+                  </li>
+                  <li>
+                    Kræver god koordination mellem user space og kernel space
+                    scheduler
+                  </li>
                   <li>Ellers kan det skabe en mindre optimal løsning</li>
                 </ul>
               </ul>
-              <p>Et begreb der kaldes <strong>Context switching</strong> bliver udøvet at OS, der suspendere den nuværende process for at fortsætte en anden process.
-              Der er nogle generelle steps i dette</p>
+              <p>
+                Et begreb der kaldes <strong>Context switching</strong> bliver
+                udøvet at OS, der suspendere den nuværende process for at
+                fortsætte en anden process. Der er nogle generelle steps i dette
+              </p>
               <ul>
                 <li>Afbryd nuværende process</li>
-                <li>Gem konteksten af den nuværende process (SP, PC, registre, ...)</li>
+                <li>
+                  Gem konteksten af den nuværende process (SP, PC, registre,
+                  ...)
+                </li>
                 <li>Gendan konteksten af næste proces</li>
                 <li>Fortsæt eksekvering af næste proces</li>
               </ul>
-              <p>Der findes to former for context switching. <strong>Pre-emptive scheduling</strong> hvor processer kan blive afbrudt når som helst, og <strong>non-preemptive scheduling</strong>
-               hvor processer frivilligt opgiver ressourcer til CPU'en. Linux supporter begge former.</p>
-               <h4>Livscyklussen for en proces</h4>
-               <img src="img/life_of_pi.png" alt="Livscyklussen for en proces" width="500px">
-               <ul>
+              <p>
+                Der findes to former for context switching.
+                <strong>Pre-emptive scheduling</strong> hvor processer kan blive
+                afbrudt når som helst, og
+                <strong>non-preemptive scheduling</strong> hvor processer
+                frivilligt opgiver ressourcer til CPU'en. Linux supporter begge
+                former.
+              </p>
+              <h4>Livscyklussen for en proces</h4>
+              <img
+                src="img/life_of_pi.png"
+                alt="Livscyklussen for en proces"
+                width="500px"
+              />
+              <ul>
                 <li>Waiting</li>
                 <ul>
                   <li>I kø for at kører på processeren</li>
@@ -391,13 +446,16 @@
                 <ul>
                   <li>Placeret på disken</li>
                 </ul>
-               </ul>
-               <h3>Multithreaded systemer</h3>
-               <p>Multithreaded systemer har nogle fordele og ulemper</p>
-               <ul>
+              </ul>
+              <h3>Multithreaded systemer</h3>
+              <p>Multithreaded systemer har nogle fordele og ulemper</p>
+              <ul>
                 <li><strong>Fordele</strong></li>
                 <ul>
-                  <li>Prioterisering - Den højest prioriterede opgave får lov at køre</li>
+                  <li>
+                    Prioterisering - Den højest prioriterede opgave får lov at
+                    køre
+                  </li>
                   <li>Modulisering - Wrap concurrent activities in a task</li>
                   <li>Ressource brug - Ikke brug CPU tid på at vente på I/O</li>
                 </ul>
@@ -406,24 +464,126 @@
                   <li>Delt data</li>
                   <li>Starvation</li>
                 </ul>
-               </ul>
-               <p>Lad os snakke lidt om disse ulemper.<br>
-              <strong>Delt data (Shared data)</strong>. Da threads deler data, kan du risikere, hvis ikke du undgår det, at to threads tilgår og ændrer på den samme variabel på samme tid. Dette kan resultere i uforudsigelighed i dit program
-             da du ikke ved med sikkerhed hvad variablen er hvornår. Dette kan også ændre sig for hver gang programmet kører.<br>
-            <strong>Starvation</strong>. Har du et bestemt interval dine tasks skal køre på, kan for mange tasks resultere i starvation, hvor en eller flere ikke bliver udført.
-          Det er et problem i hvilket som helst prioritets baseret system. Sker når dit "schedule-vindue" er for lille så dine lav-prioritets opgaver ikke når at blive udført pga. højere prioritets opgaver bliver udført i hele vinduet.
-        Det kan være svært at forudsige og kan i visse tilfælde kun ske i meget specielle situationer.</p>
+              </ul>
+              <p>
+                Lad os snakke lidt om disse ulemper.<br />
+                <strong>Delt data (Shared data)</strong>. Da threads deler data,
+                kan du risikere, hvis ikke du undgår det, at to threads tilgår
+                og ændrer på den samme variabel på samme tid. Dette kan
+                resultere i uforudsigelighed i dit program da du ikke ved med
+                sikkerhed hvad variablen er hvornår. Dette kan også ændre sig
+                for hver gang programmet kører.<br />
+                <strong>Starvation</strong>. Har du et bestemt interval dine
+                tasks skal køre på, kan for mange tasks resultere i starvation,
+                hvor en eller flere ikke bliver udført. Det er et problem i
+                hvilket som helst prioritets baseret system. Sker når dit
+                "schedule-vindue" er for lille så dine lav-prioritets opgaver
+                ikke når at blive udført pga. højere prioritets opgaver bliver
+                udført i hele vinduet. Det kan være svært at forudsige og kan i
+                visse tilfælde kun ske i meget specielle situationer.
+              </p>
             </div>
           </div>
           <h2 id="sync">Synchronization and protection</h2>
           <div class="leftRight">
             <div class="left">
               <h3>Data integrity - Concurrency challenge</h3>
+              <p>
+                Vi havde jo et problem med shared data. Når vi ville lave et
+                program med flere threads kan vi støde på det problem at data
+                kan blive tilgået og ændret på samme tid af forskellige threads
+                hvilket resulterer i uforudsigelighed i dit program. Det kan vi
+                undgå med locks. Til det skal vi bruge mutexes. Når vi har låst
+                et mutex, kan flere ikke tilgå det "lånte" data. Når vi så er
+                færdige med at bruge den data, låser vi vores mutex op igen. Et
+                eksempel kan ses herunder:
+              </p>
+              <pre><code class="cpp">
+unsigned int shared;
+Mutex m = MUTEX_INITIALIZER;
+
+void threadFunc(){
+  for (;;){
+    lock(m);
+    shared++;
+    unlock(m);
+    sleep(ONE_SECOND);
+  }
+}
+
+main(){
+  createThread(threadFunc);
+  createThread(threadFunc);
+  for(;;) sleep(100);
+}</code></pre>
+              <p>
+                Altså løsningen på problemet med delt data, er
+                <strong>Mutexes</strong>, eller <strong>Semaphores</strong>. Her
+                låser du din mutex eller semaphore inden du arbejder på data.
+                Inde i det låste "vindue" kan du arbejde med din data, og når du
+                er færdig, låser du op for denne mutex eller semaphore igen. Det
+                er vigtigt at huske, at det her er programmørens ansvar at bruge
+                mutexes/semaphores ordentligt og låse og oplåse på de rigtige
+                tidspunkter. Din compiler vil ikke hjælpe dig. ChatGPT kan
+                måske, men ellers er der ingen hjælp.
+              </p>
               <h3>Mutex & Sephamores</h3>
+              <p>
+                Mutexes står for MUTual EXclusion, og er ejet f en thread ad
+                gangen, hvilket sikrer at kun en handling kan gøres ad gangen.
+                Mutexes bruger to funktioner: <strong>lock(m)</strong> og
+                <strong>unlock(m)</strong>.
+              </p>
+              <p>
+                Semaphores bliver brugt til at signalere, men kan også bruges
+                til mutual exclusion. Modsat mutexes er en semaphore ikke eget
+                af en thread ad gangen, så "alle" kan release en sephamore. De
+                to operationer på en semaphore er <strong>take(s)</strong> og
+                <strong>release(s)</strong>.
+              </p>
               <h3>Mutex & Conditionals</h3>
             </div>
             <div class="right">
               <h3>Producer / Consumer problem</h3>
+              <p>
+                En producer putter ting ind i en buffer, og en user tager ting
+                fra en buffer. Men hvad sker der når en producer prøver at putte
+                ind i en fyldt buffer, eller hvis en user prøver at tage fra en
+                tom buffer? Vi har et eksempel fra slides, der bruger semaphores
+                kan ses herunder: (Forklaring kommer bagefter).
+              </p>
+              <pre><code class="cpp">
+class Buffer{
+  public:
+    Buffer(size_t bufferSize) : 
+                buffer_(new uint8_t[bufferSize]),
+                bufferSize_(bufferSize),
+                insert_(0), remove_(0)
+                {
+                emptySlotsLeftSem = createCountingSem(bufferSuize_);
+                usedSlotsLeftSem = createCountingSem(0);
+                }
+  
+    void put(uint8_t x){
+      take(emptySlotsLeftSem);
+      buffer[insert_] = x;
+      insert_ = (insert+1)%bufferSize_ // hvorfor bruger du modolus bufferSize_
+      release(usedSlotsLeftSem);
+    }
+
+    uint8_t get(){
+      take(usedSlotsLeftSem);
+      uint8_t tmp = buffer_[remove_];
+      remove = (remove+1)%bufferSize_; // hvorfor bruger du modolus bufferSize_?
+      release(emptySlotsLeftSem);
+    }
+
+  private:
+    uint8_t buffer;
+    size_t bufferSize_, insert_, remove_;
+    SEM_ID emptySlotsLeftSem;
+    SEM_ID usedSlotsLeftSem;
+}</code></pre>
               <h3>Dining philosophers</h3>
               <h3>Dead locks</h3>
             </div>
