@@ -572,6 +572,47 @@ void theIndicator(){
   condSignal(c);
   unlock(m);
 }</code></pre>
+<p>I denne kode, har vi et loop i waiter funktionen. I dette loop, venter vi på et signal med condWait(), det gør at låsen bliver unlocked og når denne condition kommer,
+  bliver låsen taget igen, så vi kan gøre hvad vi vil, og derefter låse op til sidst. Det betyder at du ikke længere blokerer med din lock, så længe du venter på et signal
+  med condWait. <br>
+  Signaler funktionen kan tage låsen når waiter funktionen venter på en condition, og gør sin ting før den signalerer at nu må en anden bruge den, og derefter låser op for vores mutex.<br>
+  Man kan se mere om dette fra slide <strong>21</strong> i <strong>Thread Synchronization II</strong>. Det omhandler Park-A-Lot 2000.<br>
+  Denne form for synkronisering gør det muligt at sikre dit program, så du ikke "håber" at det virker, men ved at det virker.<br>
+  forskellige synkroniserings metoder inkluderer:
+</p>
+<ul>
+  <li><strong>Mutex</strong>: s=0 eller s=1, hører til 1 thread ad gangen</li>
+  <li><strong>Conditionals</strong>: Singalerings metode brugt sammen med mutex</li>
+  <li><strong>Read/writeable locks</strong>: Flere readers, ekslusiv writer</li>
+  <li><strong>Counting semaphore</strong>: s&le;0, delt mellem tråde</li>
+  <li><strong>Binary semaphore</strong>: s=0 eller s=1, delt mellem tråde</li>
+</ul>
+<p>Forskellige synkroniserings mekanismer:</p>
+<p>#include &lt;pthread.h&gt;</pthread></p>
+<ul id="nonFormat">
+<li><em>int pthread_mutex_init(pthread_mutex_t* mutex, pthread_mutex_attr_t *mutexattr)</em></li>
+<li><em>int pthread_mutex_lock(pthread_mutex_t* mutex)</em></li>
+<li><em>int pthread_mutex_unlock(pthread_mutex_t* mutex)</em></li>
+<li><em>int pthread_mutex_destroy(pthread_mutex_t* mutex)</em></li>
+<li><em>int pthread_rwlock_init(pthread_rwlock_t* mutex, pthread_rwlockattr_t *mutexattr)</em></li>
+<li><em>pthread_rwlock_rdlock(pthread_rwlock_t* mutex)</em></li>
+<li><em>pthread_rwlock_wrlock(pthread_rwlock_t* mutex)</em></li>
+<li><em>pthread_rwlock_unlock(pthread_rwlock_t* mutex)</em></li>
+<li><em>pthread_rwlock_destroy(pthread_rwlock_t* mutex)</em></li>
+<li><em>int pthread_cond_init(pthread_cond_t* cond, const pthread_contattr_t *attr)</em></li>
+<li><em>int pthread_cond_wait(pthread_cond_t* cond, pthread_mutex_t* mutex)</em></li>
+<li><em>int pthread_cond_signal(pthread_cond_t* cond)</em></li>
+<li><em>int pthread_cond_broadcast(pthread_cond_t* cond)</em></li>
+<li><em>int pthread_cond_destroy(pthread_cond_t* cond)</em></li>
+</ul>
+<p>#include &lt;semaphore.h&gt;</p>
+<ul id="nonFormat">
+  <li><em>int sem_init(sem_t* sem, int pshared, unsigned int value)</em></li>
+  <li><em>int sem_destroy(sem_t* sem)</em></li>
+  <li><em>int sem_wait(sem_t* sem)</em></li>
+  <li><em>int sem_post(sem_t* sem)</em></li>
+</ul>
+<p>På sidste slide står der at vi skal lære <strong>RAII (Resource Acquisition Is Initialization)</strong> som vi gennemgår lidt længere nede.</p>
             </div>
             <div class="right">
               <h3>Producer / Consumer problem</h3>
@@ -586,25 +627,28 @@ void theIndicator(){
 class Buffer{
   public:
     Buffer(size_t bufferSize) : 
-                buffer_(new uint8_t[bufferSize]),
-                bufferSize_(bufferSize),
-                insert_(0), remove_(0)
-                {
-                emptySlotsLeftSem = createCountingSem(bufferSuize_);
-                usedSlotsLeftSem = createCountingSem(0);
-                }
+            buffer_(new uint8_t[bufferSize]),
+            bufferSize_(bufferSize),
+            insert_(0), remove_(0){
+              emptySlotsLeftSem = 
+              createCountingSem(bufferSuize_);
+              usedSlotsLeftSem = 
+              createCountingSem(0);
+    }
   
     void put(uint8_t x){
       take(emptySlotsLeftSem);
       buffer[insert_] = x;
-      insert_ = (insert+1)%bufferSize_ // hvorfor bruger du modolus bufferSize_
+      insert_ = (insert_+1)%bufferSize_
+      // hvorfor bruger du modulus bufferSize_
       release(usedSlotsLeftSem);
     }
 
     uint8_t get(){
       take(usedSlotsLeftSem);
       uint8_t tmp = buffer_[remove_];
-      remove = (remove+1)%bufferSize_; // hvorfor bruger du modolus bufferSize_?
+      remove_ = (remove_+1)%bufferSize_;
+      // hvorfor bruger du modulus bufferSize_?
       release(emptySlotsLeftSem);
     }
 
@@ -619,10 +663,32 @@ class Buffer{
                 én for used slots. <strong>put()</strong> tilføjer en uint8_t
                 ved at tage en semaphore fra empty slots, og derefter releaser
                 en til used slots. <strong>get()</strong> tager en semaphore fra
-                used slots og releaser en til empty slots.
+                used slots og releaser en til empty slots.<br>
+                Grunden til vi bruger modulus, er så vi ikke kommer over  bufferSize. 
+                Hvis <em>remove_</em> eller <em>insert_</em> bliver større end bufferSize, bliver den kun ændret til
+                at bliver det nummer større end bufferSize, så vi ikke kommer ud af range for vores buffer.
+                Det kan dog resultere i at, hvis ikke der bliver taget med get() ofte nok, kan data blive overskrevet.
+              </p>
+              <h3>Dead locks</h3>
+              <p>Dead locks er en Pain in the ass! Det er en situation, hvor du aldrig kan afvikle dit program, og det kan ske når du bruger mutexes.
+                Det sker hvis to eller flere threads venter på at en ressource bliver tilgængelig fra den anden thread for at kunne køre. 
+                Men den ressource bliver aldrig tilgængelig. <br>
+                Det tager os videre til et kendt eksempel, kaldet <strong>The Dining philosophers</strong>, som er et eksempel på Dead locks
               </p>
               <h3>Dining philosophers</h3>
-              <h3>Dead locks</h3>
+              <p>Kan også kaldes for The dining idiots går ud på dette:</p>
+              <ol>
+                <li>En filosof tager <strong>højre</strong> og <strong>venstre</strong> gaffel op, spiser og lægger <strong>venstre</strong> og <strong>højre</strong> gaffel på bordet og tænker:</li>
+                <li>Hvis en gaffel er <strong>taget</strong>, skal filosoffen vente på at den er <strong>klar</strong></li>
+              </ol>
+              <p>De sidder fire filosoffer/idioter rundt om et bord. Der er fire gafler. Én på hver side af hver filosof. Den første tager <strong>venstre</strong>, næste tager også <strong>venstre</strong> osv. indtil allehar taget
+              <strong>venstre</strong> gaffel.<br>
+            Så vil den første filosof gerne tage <strong>højre</strong> gaffel, men fordi filosoffen til højre for ham har taget sin <strong>venstre</strong> gaffel, er den første filosofs <strong>højre</strong> gaffel ikke tilgængelig, og han må derfor vente
+          på at den bliver ledig. Dette sker for alle filosofferne, og vi kan derfor ikke komme videre, da alle venter på deres <strong>højre</strong> gaffel, som ingen vil give.</p>
+          <p>En løsning kunne være at hver anden filosof tog deres <strong>venstre</strong> gaffel først og de andre to tog deres <strong>højre</strong> gaffel først. Det vil resultere i at kun en filosof kan spise ad gangen, og en anden kan vente på 
+          sin anden gaffel, mens de to sidste venter på deres første gaffel. Her undgår vi en deadlock, og spisningen kan afvikles. En visualisering kan ses herunder og kan læses mere om på <a id="aFormat" href="https://en.wikipedia.org/wiki/Dining_philosophers_problem"></a></p>
+          <img src="img/idiot.png" alt="dining philosophers visualization" width="400px">
+          <p>De blå pile er hvad der først blev taget. De røde pile viser hvad der prøves på at blive taget, men fejler, fordi gaflen allerede er taget af en anden.</p>
             </div>
           </div>
           <div>

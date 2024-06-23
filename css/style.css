@@ -91,6 +91,9 @@ aside {
   text-decoration-line: underline;
 }
 
+#nonFormat{
+  text-align: left;
+}
 aside a {
   display: block;
   padding: 5px;
