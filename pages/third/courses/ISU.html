@@ -696,6 +696,38 @@ class Buffer{
             <div class="leftRight">
               <div class="left">
                 <h3>The challenges performing intra-process communication</h3>
+                <p>Kommunikations design udfordringer som der bliver forelagt i slides indebærer</p>
+                <ul>
+                  <li>Individuelle tråde venter på en condition skal blive <em>true</em></li>
+                  <li>At gå ind og ud af kritiske sektioner ved brug af <em>mutexes</em> eller <em>semaphores</em></li>
+                  <ul>
+                    <li>Kan ske flere gange i en thread loop iteration</li>
+                  </ul>
+                  <li>Kan reservere flere ressourcer som skal synkroniseres mellem tråde</li>
+                  <ul>
+                    <li>Sekvensen hvor ressourcer bliver taget skal tænkes igennem</li>
+                  </ul>
+                </ul>
+                <p>En lille opsummering af dette:</p>
+                <ul>
+                  <li>Et design der sikrer at der ikke sker deadlocks eller timing problemer</li>
+                  <li>Læsbarhed bliver hurtigt et problem også</li>
+                  <li>Høj kompleksitet af koden som et resultat</li>
+                </ul>
+                <p>Til dette vil vi gerne have <strong>events/messages</strong>, for at vi kan lave en opgave når en condition bliver sat til <em>true</em>.<br>
+                Ved event driven programming bliver hver message håndteret af en specifik handler. Altså en specifik funktion bliver kaldt når vi modtager et specifikt event.
+              <br>Her kan vi have to forskellige inputs:</p>
+              <ul>
+                <li>Sensor input</li>
+                <ul>
+                  <li>Temperatur oversteget besked &rarr; skru ned for varmen</li>
+                  <li>Bil registreret &rarr; Åben garage dør</li>
+                </ul>
+                <li>Signal input</li>
+                <ul>
+                  <li>Exit knap i GUI &rarr; luk program</li>
+                </ul>
+              </ul>
                 <h3>Message queue</h3>
                 <h4>The premises for designing it</h4>
                 <h4>Various design solutions - Which one is chosen and why</h4>
