@@ -1014,7 +1014,8 @@ if(typeid(*msg_)==typeid(garageDoorOpenReq)){
 }</code></pre>
                 <p>
                   Vi kan også associere id'et med en message, som faktisk er den
-                  vi har arbejdet med. Her kan vi bruge enums og switch cases
+                  vi har arbejdet med. Her kan vi bruge enums og switch cases.
+                  Her har vi to elementer til vores MessageQueue: id_ og msg_
                 </p>
               </div>
               <div class="right">
@@ -1022,12 +1023,74 @@ if(typeid(*msg_)==typeid(garageDoorOpenReq)){
                   Impact on design/implementation between before and after
                   message queue
                 </h3>
+                <p>Vi har tre typer af signaler:</p>
+                <ul>
+                  <li>
+                    <strong>Request</strong>: navngivet XXXReq (en request har
+                    brug for en confirm)
+                  </li>
+                  <li><strong>Confirm</strong>: nanvngivet XXXCfm</li>
+                  <li>
+                    <strong>Indication</strong>: navngivet XXXInd (envejs
+                    kommunikation)
+                  </li>
+                </ul>
+                <p>
+                  Med alt dette kan vi oprette en car thread med tilhørende
+                  funktioner. Denne kan ses herunder:
+                </p>
+                <pre><code class="cpp">enum{ ID_START_IND, ID_GARAGE_DOOR_OPEN_CFM }
+pthread_t carId;
+MsgQueue carMq;
+
+void carHandler(unsigned id, Message* msg){
+  switch(id) {
+    case ID_START_IND:
+      carHandleIdStartInd();
+      break;
+    case ID_GARAGE_DOOR_OPEN__CFM:
+      carHandleIdGarageDoorOpenCfm(
+      static_cast&lt;garageDoorOpenCfm&gt;(msg));
+      break;
+  }
+}
+
+void* car(void*){
+  for(;;){
+    unsigned long id;
+    Message* msg = carMq.receive(id);
+    carHandler(id, msg);
+    delete msg;
+  }
+}
+
+void startCarThread(){
+  pthread_create(&carId, nullptr, car, nullptr);
+  carMq.send(ID_START_IND);
+}</code></pre>
+                <p>
+                  Disse funktioner skal også have implementationer jo, og der
+                  skal også have funktioner for ID_GARAGE_DOOR_OPEN_REQ, som i
+                  dette tilfælde kun har én case og ikke har brug for en start
+                  indikator.
+                </p>
                 <h3>Event driven programming</h3>
+                <p>Nu har vi diskuteret lidt om event driven programming</p>
                 <h4>Basic idea</h4>
+                <p>
+                  Vi har et event loop, og skal kun bruge et funktionskald til
+                  receive og handle i loopet. Vi har Message parsing hvor en
+                  sender Allokerer og en receiver Deleter/Deallokerer, da
+                  receiver er den eneste del der ved hvornår vi ikke skal bruge
+                  beskeden mere.
+                </p>
                 <h4>Reactiveness</h4>
                 <h4>
                   Design - e.g. from sequence diagrams to code (or vice versa)
                 </h4>
+                <p>
+                  Se slide 24, til 31 i <strong>Thread communication</strong>
+                </p>
               </div>
             </div>
             <h2 id="osApi">OS API</h2>
