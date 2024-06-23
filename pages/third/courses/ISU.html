@@ -96,8 +96,17 @@
         <div class="topics">
           <p class="instructions">
             Scroll down or hover over the course to see what topics you can read
-            about. These are the topics/subjects from the oral exam pdf.
+            about. These are the topics/subjects from the oral exam pdf.<br>
+            The special while loop! You need to learn it!:
           </p>
+          <pre><code class="cpp">void logSystem::run(){
+  for (;;){
+    unsigned long id;
+    osapi::Message* msg = mq_receive(id);
+    handleMsg(id, msg);
+    delete msg;
+  }
+}</code></pre>
           <h2 id="osKernel">Programmming in relation to the OS and Kernel</h2>
           <div class="leftRight">
             <div class="left">
@@ -728,7 +737,30 @@ class Buffer{
                   <li>Exit knap i GUI &rarr; luk program</li>
                 </ul>
               </ul>
+              <p>Med andre ord kan man skrive det som: <strong>event = Message</strong>. Og dette kan ses som en proces med to faser</p>
+              <ul>
+                <li>Acquire/select new message</li>
+                <ul>
+                  <li>Håndteret af en <strong>Message Queue (MQ)</strong> og sikrer at et antal af beskeder kan være i "kø" ad gangen</li>
+                </ul>
+                <li>Process new message in handler</li>
+                <ul>
+                  <li>Håndteret ved at lave en case til en specifik Message</li>
+                </ul>
+              </ul>
                 <h3>Message queue</h3>
+                <p>Message Queue er den kø hvor beskederne kommer. For at gennemgå denne vender vi tilbage til Producer og consumer problemet, hvor en producer putter ind i en kø og consumer modtager fra givne kø.
+                  <br> Vi kan have flere producers og en consumer, som håndterer de forskellige beskeder i vores message queue <strong>MsgQueue</strong>. Et par ekstra kriterier for denne er:
+                </p>
+                <ul>
+                  <li>Hvis den modtagende kø er fuld, må tråden der ønsker at overføre kontrol og/eller data blokere og vente på mere plads</li>
+                  <ul>
+                    <li>Der er et max antal af elementer i køen</li>
+                  </ul>
+                  <li>Den modtagende tråd må blokere når den modtager fra en tom kø</li>
+                  <li>Blokeringer skal ikke laves med polling (sleeps)</li>
+                  <li>Hvad skal vi gøre når vi ikke må bruge sleep? &rarr; <strong>Conditionals</strong></li>
+                </ul>
                 <h4>The premises for designing it</h4>
                 <h4>Various design solutions - Which one is chosen and why</h4>
                 <h4>Its design and implementation</h4>
