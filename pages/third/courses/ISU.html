@@ -542,6 +542,36 @@ main(){
                 <strong>release(s)</strong>.
               </p>
               <h3>Mutex & Conditionals</h3>
+              <p>
+                Conditionals er en form for signaling mechanism. Vi har en
+                <strong>receiver/waiter</strong> og en
+                <strong>sender/indicator</strong>. Receiver/waiter, venter på en
+                conditional variabel, og en sender/indicator signalerer et
+                partikulært condition variabel på et tidspunkt. Du skal definere
+                en mutex, condition og et signal flag. Et lille eksempel kan ses
+                herunder:
+              </p>
+              <pre><code class="cpp">
+Mutex m;
+Condition c;
+
+bool waitingFor = false;
+
+void theWaiter(){
+  lock(m);
+  while(!waitingFor){
+    condWait(c, m);
+  }
+  waitingFor = false;
+  unlock(m);
+}
+
+void theIndicator(){
+  lock(m);
+  waitingFor = true;
+  condSignal(c);
+  unlock(m);
+}</code></pre>
             </div>
             <div class="right">
               <h3>Producer / Consumer problem</h3>
@@ -584,6 +614,13 @@ class Buffer{
     SEM_ID emptySlotsLeftSem;
     SEM_ID usedSlotsLeftSem;
 }</code></pre>
+              <p>
+                Her starter vi med at vi har to semaphores, én for empy slots og
+                én for used slots. <strong>put()</strong> tilføjer en uint8_t
+                ved at tage en semaphore fra empty slots, og derefter releaser
+                en til used slots. <strong>get()</strong> tager en semaphore fra
+                used slots og releaser en til empty slots.
+              </p>
               <h3>Dining philosophers</h3>
               <h3>Dead locks</h3>
             </div>
