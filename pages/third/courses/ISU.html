@@ -813,13 +813,14 @@ class Buffer{
                 <a
                   id="aFormat"
                   href="https://en.wikipedia.org/wiki/Dining_philosophers_problem"
-                ></a>
-                <img
-                  src="img/idiot.png"
-                  alt="dining philosophers visualization"
-                  width="400px"
-                />
+                  >Wikipedia</a
+                >
               </p>
+              <img
+                src="img/idiot.png"
+                alt="dining philosophers visualization"
+                width="400px"
+              />
               <p>
                 De blå pile er hvad der først blev taget. De røde pile viser
                 hvad der prøves på at blive taget, men fejler, fordi gaflen
@@ -923,6 +924,7 @@ class Buffer{
                   <strong>MsgQueue</strong>. Et par ekstra kriterier for denne
                   er:
                 </p>
+                <h4>The premises for designing it</h4>
                 <ul>
                   <li>
                     Hvis den modtagende kø er fuld, må tråden der ønsker at
@@ -942,9 +944,78 @@ class Buffer{
                     <strong>Conditionals</strong>
                   </li>
                 </ul>
-                <h4>The premises for designing it</h4>
                 <h4>Various design solutions - Which one is chosen and why</h4>
+                <p>
+                  Der findes forskellige solutions til dette.
+                  <strong>void/simple array of bytes</strong>,
+                  <strong>template baseret</strong> og
+                  <strong>inheritance</strong>. Vi vælger inheritance, men
+                  herunder kan du se hvad det forskellige typer indeholder
+                </p>
+                <ul>
+                  <li>Void/array</li>
+                  <ul>
+                    <li>Kan indeholde alting</li>
+                    <li>
+                      Ingen type info - ingen type safety (Hvisikke vi ved hvad
+                      det er, ved vi ikke hvordan vi skal slette det)
+                    </li>
+                  </ul>
+                  <li>Template</li>
+                  <ul>
+                    <li>
+                      Afhænger af om implementationen er en god løsning, men
+                      mere kompleks
+                    </li>
+                    <li>Type safety</li>
+                  </ul>
+                  <li>Inheritance</li>
+                  <ul>
+                    <li>Simpel og udviddet med sub-classing</li>
+                    <li>Type-safety/type-info - delete med base pointer</li>
+                    <li>Might incur overhead?</li>
+                  </ul>
+                </ul>
                 <h4>Its design and implementation</h4>
+                <p>Et lille diagram på hvordan de designes kan ses herunder:</p>
+                <img
+                  src="img/inheritance.png"
+                  alt="inheritance desing"
+                  width="400px"
+                />
+                <p>Og et lille kode udsnit kan ses herunder:</p>
+                <pre><code class="cpp">class Message{
+  public:
+    virtual ~Message(){}
+}
+
+struct garageDoorOpenReq : public Message {
+  MsgQueue* mq_;
+}</code></pre>
+                <p>
+                  Til dette skal vi bruge message parsing. En producer laver og
+                  sender en garageDoorOpenReq besked. Derfor bliver klassen
+                  garageDoorOpenReq betragtet som en Message*. Men hvordan ved
+                  receiveren hvilken type det egentlig er?. Hvordan konverterer
+                  vi en Message* til en garageDoorOpenReq*?
+                </p>
+                <p>
+                  Det gør vi selvfølgelig med dynamic_cast&lt;&gt; eller med
+                  typeid(). Hvordan man kan med disse to metoder kan ses
+                  herunder:
+                </p>
+                <pre><code class="cpp">garageDoorOpenReq gdor;
+Message* msg_ = &gdor ;
+
+garageDoorOpenReq* req = dynamic_cast&lt;garageDoorOpenReq&gt;(msg_);
+
+if(typeid(*msg_)==typeid(garageDoorOpenReq)){
+  garageDoorOpenReq* req = static_cast&lt;garageDoorOpenReq&gt;(msg_);
+}</code></pre>
+                <p>
+                  Vi kan også associere id'et med en message, som faktisk er den
+                  vi har arbejdet med. Her kan vi bruge enums og switch cases
+                </p>
               </div>
               <div class="right">
                 <h3>
