@@ -1084,9 +1084,43 @@ void startCarThread(){
                   receive og handle i loopet. Vi har Message parsing hvor en
                   sender Allokerer og en receiver Deleter/Deallokerer, da
                   receiver er den eneste del der ved hvornår vi ikke skal bruge
-                  beskeden mere.
+                  beskeden mere. Det består af tre principper:
                 </p>
+                <ol>
+                  <li><strong>Event loop</strong></li>
+                  <ul>
+                    <li>
+                      Event loopet venter på et event og sørger for at kalde de
+                      relevante handlers, der passer til eventet. Det sørger for
+                      at programmet altid er klar til nye events.
+                    </li>
+                  </ul>
+                  <li><strong>Event handler</strong></li>
+                  <ul>
+                    <li>
+                      Funktionskald eller metoder der håndterer de events der
+                      kommer. Bliver kaldet af event loopet.
+                    </li>
+                  </ul>
+                  <li><strong>Message parsing</strong></li>
+                  <ul>
+                    <li>
+                      Når et events modtages, skal beskeden parses for at forstå
+                      indhold og oprindelse. En sender allokerer en besked og en
+                      receiver deallokerer den. På denne måde håndteres
+                      ressourcerne effektivt.
+                    </li>
+                  </ul>
+                </ol>
                 <h4>Reactiveness</h4>
+                <p>
+                  En stor fordel med dette event-driven programming, er at
+                  systemet kan reager hurtigt og effektivt. Det uendelige loop
+                  sørger for at et event bliver håndteret hurtigt, så event
+                  loopet kan reagere på næste event. Den måde det bliver
+                  håndteret på er at kalde en handler, der passer til det event
+                  der kommer, og loopet er klar igen.
+                </p>
                 <h4>
                   Design - e.g. from sequence diagrams to code (or vice versa)
                 </h4>
@@ -1098,58 +1132,99 @@ void startCarThread(){
             <h2 id="osApi">OS API</h2>
             <div class="leftRight">
               <div class="left">
-                <p>En API gemmer noget at systemet. Det står for 
-                  Application programming interface, og giver en 
-                  hvis form for abstraktion og simplifikation. Det muliggør kommunikation
-                mellem forskellige softwarekomponenter, hvilket gør det muligt for udviklere at interagere
-              med systemet uden at skulle forstå de komplekse underliggende detaljer</p>
+                <p>
+                  En API gemmer noget at systemet. Det står for Application
+                  programming interface, og giver en hvis form for abstraktion
+                  og simplifikation. Det muliggør kommunikation mellem
+                  forskellige softwarekomponenter, hvilket gør det muligt for
+                  udviklere at interagere med systemet uden at skulle forstå de
+                  komplekse underliggende detaljer
+                </p>
                 <h3>The design philosophy - Why OO and OS Api?</h3>
-                <p>Why should you use Object-Oriented programming and OS Api?
-                  <br>Different OS'es have different approaches to the creation of threads,
-                  Manipulation of mutexes, how to allocate memory, open files, etc. Nu skifter vi lige til dansk.
-                  Brugen af en OS Api gør dette meget enklere ved at lave en funktion for det hele.
-                  Selve programmet eller OS Api, sørger så at stå for, at kalde den rette funktion, alt efter hvilket
-                  OS du er på. <br>
-                  Du skal altså kun lære én API for at lave threads, manipulere med mutexes osv. og ikke lære for hvert styresystem.
-                  <br>Du kan altså bygge dit program på din computer, teste det der og flytte det over på din device,
-                  uden at skulle ændre kode, bygge det på device og programmet vil opføre sig som da du testede det på
-                  computeren, da OS API bygger programmet til det styresystem det ligger på, og derefter kalder de rigtige funktioner.<br>
-                  Det gør at muligvis kun små detaljer skal debugges på din target platform, og de store bugs kan debugges nemmere og hurtigere på din computer
+                <p>
+                  Why should you use Object-Oriented programming and OS Api?
+                  <br />Different OS'es have different approaches to the
+                  creation of threads, Manipulation of mutexes, how to allocate
+                  memory, open files, etc. Nu skifter vi lige til dansk. Brugen
+                  af en OS Api gør dette meget enklere ved at lave en funktion
+                  for det hele. Selve programmet eller OS Api, sørger så at stå
+                  for, at kalde den rette funktion, alt efter hvilket OS du er
+                  på. <br />
+                  Du skal altså kun lære én API for at lave threads, manipulere
+                  med mutexes osv. og ikke lære for hvert styresystem.
+                  <br />Du kan altså bygge dit program på din computer, teste
+                  det der og flytte det over på din device, uden at skulle ændre
+                  kode, bygge det på device og programmet vil opføre sig som da
+                  du testede det på computeren, da OS API bygger programmet til
+                  det styresystem det ligger på, og derefter kalder de rigtige
+                  funktioner.<br />
+                  Det gør at muligvis kun små detaljer skal debugges på din
+                  target platform, og de store bugs kan debugges nemmere og
+                  hurtigere på din computer
                 </p>
                 <h3>
                   Elaborate on the challenge of building it and its current
                   design
                 </h3>
-                <p>Når man designer et system, der skal være kompatibelt med flere operativsystemer, er der betydelige udfordringer. En af de største
-                  udfordringer er at sikre, at programmet fungerer korrekt på tværs af de forskellige OS, uden at skulle omskrive ellertilpasse store dele af koden.
-                  Det er også her PIMPL-idiomet kommer som en effektiv løsning
+                <p>
+                  Når man designer et system, der skal være kompatibelt med
+                  flere operativsystemer, er der betydelige udfordringer. En af
+                  de største udfordringer er at sikre, at programmet fungerer
+                  korrekt på tværs af de forskellige OS, uden at skulle omskrive
+                  ellertilpasse store dele af koden. Det er også her
+                  PIMPL-idiomet kommer som en effektiv løsning
                 </p>
                 <h4>The PIMPL / Cheshire Cat idiom - The how and why</h4>
-                <p>Pimpl står for <strong>Pointer to IMPLementation</strong>. Det indebærer indkapsling og abstraktion, reduktion af compile-time dependency og binær kompatibilitet
+                <p>
+                  Pimpl står for <strong>Pointer to IMPLementation</strong>. Det
+                  indebærer indkapsling og abstraktion, reduktion af
+                  compile-time dependency og binær kompatibilitet
                 </p>
                 <ol>
                   <li>Indkapsling og abstraktion</li>
                   <ul>
-                    <li>Pimpl-idiomet skjuler implementeringsdetaljerne for en klasse fra dens brugere. Dette gør det muligt at ændre implementeringen uden at påvirke de dele af
-                      koden, der bruger klassen. Det forbedrer også modulariteten og gør koden lettere at vedligeholde.
+                    <li>
+                      Pimpl-idiomet skjuler implementeringsdetaljerne for en
+                      klasse fra dens brugere. Dette gør det muligt at ændre
+                      implementeringen uden at påvirke de dele af koden, der
+                      bruger klassen. Det forbedrer også modulariteten og gør
+                      koden lettere at vedligeholde.
                     </li>
                   </ul>
                   <li>Compile-time dependency reduktion</li>
                   <ul>
-                    <li>Ved at adskille grænsefladen fra implementeringen skal ændringer i implementeringen ikke genkompilere klientkoden, der bruger grænsefladen.
-                      Dette kan reducere kompileringstiden betydeligt, især i store projekter.
+                    <li>
+                      Ved at adskille grænsefladen fra implementeringen skal
+                      ændringer i implementeringen ikke genkompilere
+                      klientkoden, der bruger grænsefladen. Dette kan reducere
+                      kompileringstiden betydeligt, især i store projekter.
                     </li>
                   </ul>
                   <li>Binær kompatibiliet</li>
                   <ul>
-                    <li>Idiomet opretholder binær kompatibilitet på tværs af forskellige versioner af et bibliotek.
-                      
+                    <li>
+                      Idiomet opretholder binær kompatibilitet på tværs af
+                      forskellige versioner af et bibliotek.
                     </li>
                   </ul>
                 </ol>
-                <p>Dette idiom kræver manuel hukommelsesstyring som øger risikoen for hukommelseslækager, så vær omhyggelig med hukommelsesallokering når du bruger det.</p>
+                <p>
+                  Dette idiom kræver manuel hukommelsesstyring som øger risikoen
+                  for hukommelseslækager, så vær omhyggelig med
+                  hukommelsesallokering når du bruger det.
+                </p>
                 <h4>CPU / OS Architecture</h4>
-                <p>Når man arbejder med forskellige CPU- og OS-arkitekturer, skal man tage hensyn til forskelle i hardware og operativsystemfunktioner</p>
+                <p>
+                  Når man arbejder med forskellige CPU- og OS-arkitekturer, skal
+                  man tage hensyn til forskelle i hardware og
+                  operativsystemfunktioner. Forskellige CPU-er kan have
+                  forskellige instruktioner og optimeringer, og forskellige
+                  operativsystemer har forskellige mekanismer for
+                  ressourcehåndtering, threading og synkronisering. Ved at bruge
+                  OS API og PIMPL-idiomet, kan man abstrahere sig fra disse
+                  forskelle, og skabe software der er mere bærbar og nemmer at
+                  vedligeholde.
+                </p>
               </div>
               <div class="right">
                 <h3>Effect on design/implementation</h3>
@@ -1157,12 +1232,52 @@ void startCarThread(){
                   MQs (Message queues) used with pthreads contra MQ used in OO
                   OS Api
                 </h4>
+                <p><strong>Pthreads</strong></p>
+                <ul>
+                  <li>
+                    <strong>Manuel håndtering</strong>: Når du bruger pthreads,
+                    skal du manuelt opsætte og håndtere ressourcerne. Du skal
+                    selv oprette køen, styre synkronisering, og sikre korrekt
+                    oprydning, for at undgår lækager.
+                  </li>
+                  <li>
+                    <strong>Kompleksitet</strong>: Designet kan blive meget
+                    komplekst da udvikleren skal håndter lavniveaus detaljer som
+                    synkronisering, fejlhåndtering og ressourcehåndtering.
+                  </li>
+                  <li>
+                    <strong>Fleksibilitet</strong>: Pthreads kan giver en god
+                    kontrol over trådhåndtering.
+                  </li>
+                </ul>
+                <p><strong>OO OS API</strong></p>
+                <ul>
+                  <li>
+                    <strong>Abstraktion</strong>: køhåndtering, synkronisering
+                    og fejlhåndtering bliver mere højniveau, og nemmere at
+                    implementer.
+                  </li>
+                  <li>
+                    <strong>Brugervenlighed</strong>: Det er mere brugervenligt,
+                    da det forenkler oprettelsn og håndteringen af tråde og
+                    message queues. Det reducerer mængden af kode der skal
+                    skrives.
+                  </li>
+                  <li>
+                    <strong>Indkapsling</strong>: Ved at indkapsle tråde og
+                    synkronisering i klasser, fremmer OO OS API bedre
+                    kodeorganisering, modularitet og genbrug.
+                  </li>
+                </ul>
                 <h4>RAII in use</h4>
                 <h4>Using Threads before and now</h4>
                 <h3>
                   UML Diagrams to implementation (class and sequence) - How?
                 </h3>
-                <p>Se fra slide  <strong>20</strong> i <strong>OS API</strong> pdf'en</p>
+                <p>
+                  Se fra slide <strong>20</strong> i
+                  <strong>OS API</strong> pdf'en
+                </p>
               </div>
             </div>
             <h2 id="mds">MDS Message Distribution system</h2>
@@ -1187,8 +1302,14 @@ void startCarThread(){
             <div class="leftRight">
               <div class="left">
                 <h3>RAII - What and why?</h3>
-                <p><strong>RAII</strong> står for <strong>Resource Acquisition Is Initialization</strong>. Her wrapper du alle ressourcer i sit eget objekt, der 
-                håndterer deres livstid og putter objekten på stacken. Det hjælper med, at spare på hukommelsen. OOgså på mutexes hjælper det med at undgå deadlocks</p>
+                <p>
+                  <strong>RAII</strong> står for
+                  <strong>Resource Acquisition Is Initialization</strong>. Her
+                  wrapper du alle ressourcer i sit eget objekt, der håndterer
+                  deres livstid og putter objekten på stacken. Det hjælper med,
+                  at spare på hukommelsen. OOgså på mutexes hjælper det med at
+                  undgå deadlocks
+                </p>
                 <h3>Copy construction and the assignment operator</h3>
               </div>
               <div class="right">
