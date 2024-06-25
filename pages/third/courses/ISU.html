@@ -1284,8 +1284,142 @@ void startCarThread(){
             <div class="leftRight">
               <div class="left">
                 <h3>Messaging distribution system - Why & how?</h3>
+                <p>Som det er nu, skal andre threads have adgang til en anden threads message queue, for at kunne sende en besked til denne thread.
+                  Den skal også vide at den specifikke thread gerne vil have dens data. Potentielle problemer med dette kan opstå når du laver dine threads.
+                  Hvilken kommer først, Kyllingen eller ægget? (Det er ægget der kom først siden ægget har eksisteret længe før kyllingen. Derimod må det være kyllingen
+                  der kom først hvis man snakker om et kyllinge-æg, da et kyllinge-æg kun kan komme fra en kylling, og kyllingen må være en "mutation" fra et andet æg-læggende
+                  dyr, og derfor kom den første kylling altså ikke fra et kyllinge-æg).
+                  <br>Der er to generelle kommunikationsformer:
+                </p>
+                <ol>
+                  <li>Kommunikation med request og confirms - To-vejs kommunikation</li>
+                  <ul>
+                    <li>Kendskab eller adgang til message queue er relevant</li>
+                    <li>Højere kobling, delt info</li>
+                    <li>Mulig tilgang - Specifik receiver design</li>
+                  </ul>
+                  <li>Status information - Indikation</li>
+                  <ul>
+                    <li>En-vejs kommunikation</li>
+                    <li>Kendskab til hinanden kan være irrelevant</li>
+                    <li>Anonymt system design kan bruges</li>
+                    <li>Lavere kobling</li>
+                    <li>Mulig tilgang - Broadcasting design</li>
+                    <ul>
+                      <li>Også kaldet MDS (Message Distribution System)</li>
+                    </ul>
+                  </ul>
+                </ol>
+                <h4><strong>Specifik receiver</strong></h4>
+                <p>Her har du en <strong>input thread</strong> som sender beskeder til <strong>info thread</strong>, der kan modtage beskeder fra andre også.
+                Her kommer et nyt niveau ind. <strong>Mediator</strong>. Der bliver lavet et post kontor / post office. Hver thread har ikke brug for at kende modtagerens Message queue.
+              Beskeden bliver sendt med navngivning (i string format)</p>
+                <h4><strong>Brodcasting</strong></h4>
+                <p>Her er det irrellevant, hvem modtageren er. Du kan have en thread for et thermometer, som sender, og to threads som subscriber. En logger thread og en alarm thread.
+                Thermometeret sender en ny temperatur hvert sekund til alle som er interreseret, men er egentlig ligeglad med hvem der subscriber.
+                Det er her vi har MDS.
+                </p>
+                <ul>
+                  <li>Subscriber = receiver</li>
+                  <li>Subscriber til en navngiven besked (std::string)</li>
+                  <ul>
+                    <li>Hvem - ved at give en message queue pointer</li>
+                    <li>Hvordan - Ved at give et ID til at modtage på, når en besked er klar</li>
+                  </ul>
+                  <li>Publisher</li>
+                  <ul>
+                    <li>Giver besked til alle subscribers, hver vil modtage beskeden der bliver sendt ud med deres eget ID</li>
+                  </ul>
+                </ul>
+                <p>Man kan også gennemgå det sådan her:</p>
+                <ul>
+                  <li>Hver modtager har sit eget lokale ID</li>
+                  <li>Vi har brug for et unikt globalt ID</li>
+                  <ul>
+                    <li>Brug det kvalificerede navn som en string</li>
+                  </ul>
+                  <li>Subscriber</li>
+                  <ul>
+                    <li>Subscriber ved brug af sin egen MsgQueue og lokalt ID når den modtager en ny besked med det Globale ID som navn</li>
+                  </ul>
+                  <li>Publisher</li>
+                  <ul>
+                    <li>Giver besked ved at sende en ny besked associeret med det globale ID</li>
+                  </ul>
+                </ul>
+                <p>Vi kan skrive noget pseudo kode for thermometer thread og logger/alarm thread som også står på slides:</p>
+                <h4>Logger thread</h4>
+                <ul>
+                  <li>Subscribe hos MDS for opdateringer ved temperatur</li>
+                  <ul>
+                    <li>Få adgang til en enkelt instans af MDS</li>
+                    <li>Relevante parametre:</li>
+                    <ul>
+                      <li>Globalt ID af beskeden du vil subscribe til</li>
+                      <li>Pointer til egen message queue</li>
+                      <li>ID af beskeden du vil modtage i din egen message queue</li>
+                      <ul>
+                        <li>OBS! Receiver har hvert deres eget lokale ID</li>
+                      </ul>
+                    </ul>
+                    <li>Kald MDS::subscribe(NEW_TEMP_VALUE_GLOB_ID, &mq, NEW_TEMP_VALUE_LOC_ID)</li>
+                  </ul>
+                  <li>Når du modtager NEW_TEMP_VALUE_LOC_ID, håndter beskeden korrekt</li>
+                  <ul>
+                    <li>Skriv til log</li>
+                  </ul>
+                </ul>
+                <h4>Thermometer thread</h4>
+                <ul>
+                  <li>Hvert sekund læs temperaturen fra en HW sensor</li>
+                  <li>Lav besked</li>
+                  <li>Broadcast besked</li>
+                  <ul>
+                    <li>Få adgang til en eneklt instans af MDS</li>
+                    <li>Kald MDS::send(NEW_TEMP_VALUE_GLOB_ID, tempMsg)</li>
+                  </ul>
+                </ul>
+                <p>Hvad opnår dette så? <br>
+                Det eliminerer nødvendigheden for en publisher at kende til og håndtere subscribers. Og flere subscribers får samme besked.<br>
+              For at kunne bruge dette, har du også nogle kriterier der skal mødes. Du har altså brug for:</p>
+              <ul>
+                <li>MDS der er oppe inden du skal bruge det</li>
+                <li>Brug af Singleton eller parse en pointer/reference</li>
+                <li>Beskeder skal kunne identificeres globalt ad strings</li>
+                <li>En-vejs kommunikation</li>
+              </ul>
                 <h3>The PostOffice design - Why and how?</h3>
+                <p>Post Office designet omhandler specifik receiver som blev hurtigt gennemgået ovenover. Her har vi brug for en <strong>input thread</strong> og en <strong>info thread</strong>
+                <br> Det var også her hvor vi ikke havde brug for at kende til modtagerens message queue. Vi skal også lære lidt om mediator. PostOffice design har fået dette navn fordi det minder om
+                et post kontor. Meddelelser bliver afleveret på kontoret, og bliver distribueret af post office. Der er altså ikke nogen direkte interaktion mellem sender og modtager.<br>
+              Noget pseudo kode for info thread og input thread:</p>
+              <h4>Info thread</h4>
+              <ul>
+                <li>Registrer hos post kontoret ved brug af:</li>
+                <ul>
+                  <li>Navn/ID - "InfoThread" og association med message queue</li>
+                  <li>Kalder PostOffice::register(std::string name, osapi::MsgQueue* mq)</li>
+                  <ul>
+                    <li>PostOffice::register(InfoThreadComInf::QUEUE, &mq)</li>
+                    <li>Hvor InfoThreadComInf::QUEUE == "InfoThread"</li>
+                  </ul>
+                </ul>
+              </ul>
+              <h4>Input thread</h4>
+              <ul>
+                <li>Send data til <em>InfoThread</em> på et tidspunkt</li>
+                <ul>
+                  <li>Bruger PostOffice for at sende en besked til modtageren med dens Navn/ID</li>
+                  <li>Kalder PostOffice::send(std::string name, unsigned long id, osapi::Message* msg)</li>
+                  <ul>
+                    <li>PostOffice::send(InfoThreadComInf::QUEUE, InfoThreadComInf::ID_START, starMsg)</li>
+                  </ul>
+                </ul>
+              </ul>
                 <h3>Decoupling achieved</h3>
+                <p>Ved brug af disse designs og principper, har vi fået hvad man kan kalde for en løs kobling. Altså ændringer i modtager kræver ikke nødvendigvis ændringer i senderen, og vice versa.
+                Denne kobling er foretrukket, da det sparer både tid og ressourcer, og er nemmere at ændre på et enkelt sted, frem for at skulle ændre alle steder, for at lave en måske lille ændring.
+                </p>
               </div>
               <div class="right">
                 <h3>Design considerations & implementation</h3>
@@ -1294,8 +1428,56 @@ void startCarThread(){
                   design
                 </h3>
                 <h4>GoF Singleton Pattern</h4>
+                <ul>
+                  <li>Udfordring</li>
+                  <ul>
+                    <li>Behøver notifikation ved ændring</li>
+                    <li>En-til-mange forhold - broadcasting</li>
+                  </ul>
+                  <li>Mulig løsning</li>
+                  <ul>
+                    <li>Publisher/subscriber (eller observatør)</li>
+                  </ul>
+                  <li>Brug</li>
+                  <li>Ulemper</li>
+                </ul>
                 <h4>GoF Observer Pattern</h4>
+                <ul>
+                  <li>Udfordring</li>
+                  <ul>
+                    <li>Behøver notifikation ved ændring</li>
+                    <li>En-til-mange forhold - broadcasting</li>
+                  </ul>
+                  <li>Mulig løsning</li>
+                  <ul>
+                    <li>Publisher/subscriber (eller observatør)</li>
+                  </ul>
+                  <li>Brug</li>
+                  <ul>
+                    <li>MDS</li>
+                    <li>Knap trykket på GUI &rarr; kædereaktion (lukke ned + luk program)</li>
+                    <li>Sensor skifter værdi &rarr; flere enheder vil notificeres</li>
+                  </ul>
+                  <li>Ulemper</li>
+                  <ul>
+                    <li>Opdateringer koster gennem systemet</li>
+                    <li>En subscriber kan tage "lang" tid om at håndtere en notifikation</li>
+                  </ul>
+                </ul>
                 <h4>GoF Mediator Pattern</h4>
+                <ul>
+                  <li>Udfordring</li>
+                  <ul>
+                    <li>Behøver notifikation ved ændring</li>
+                    <li>En-til-mange forhold - broadcasting</li>
+                  </ul>
+                  <li>Mulig løsning</li>
+                  <ul>
+                    <li>Publisher/subscriber (eller observatør)</li>
+                  </ul>
+                  <li>Brug</li>
+                  <li>Ulemper</li>
+                </ul>
               </div>
             </div>
             <h2 id="resHandle">Resource handling</h2>
