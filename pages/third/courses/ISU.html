@@ -1270,7 +1270,11 @@ void startCarThread(){
                   </li>
                 </ul>
                 <h4>RAII in use</h4>
+                <p>RAII Går ud på at allokeringen sker i objektets constructor. Når objektet går ud af scope, destrueres det derefter automatisk og ressourcerne frigives derfor.</p>
                 <h4>Using Threads before and now</h4>
+                <p>Nu, istedet for at bruge <em>pthread_create(), pthread_join()</em>, osv. kan vi skrive <em>osapi::Thread carThread(&car)</em> efter vi har oprettet et car objekt
+                og med denne thread kan vi skrive <em>carThread.start(); carThread.join()</em> osv. Dette gør det meget simplere at arbejde med threads, da programmet finder ud
+              af hvilke funktioner der skal kaldes alt efter dit styresystem, og du derfor ikke skal ændre i koden, eller skrive noget andet når du skal bygge til windows istedet for linux.</p>
                 <h3>
                   UML Diagrams to implementation (class and sequence) - How?
                 </h3>
@@ -1431,15 +1435,32 @@ void startCarThread(){
                 <ul>
                   <li>Udfordring</li>
                   <ul>
-                    <li>Behøver notifikation ved ændring</li>
-                    <li>En-til-mange forhold - broadcasting</li>
+                    <li>System wide adgang til et givent objekt</li>
+                    <li>&rarr; Mange pointers og/eller referencer der skal sendes rundt</li>
                   </ul>
                   <li>Mulig løsning</li>
                   <ul>
-                    <li>Publisher/subscriber (eller observatør)</li>
+                    <li>Singleton - e.g. kun én instans i hele systemet</li>
                   </ul>
                   <li>Brug</li>
+                  <ul>
+                    <li>MDS</li>
+                    <li>Config service</li>
+                    <li>Log service</li>
+                    <li>Enhver application wide service</li>
+                  </ul>
                   <li>Ulemper</li>
+                  <ul>
+                    <li>Globale variable, som:</li>
+                    <ul>
+                      <li>Serializes acces needed</li>
+                    </ul>
+                  </ul>
+                  <li>Livstid</li>
+                  <ul>
+                    <li>Hvem opretter?</li>
+                    <li>Hvem sletter? og hvornår?</li>
+                  </ul>
                 </ul>
                 <h4>GoF Observer Pattern</h4>
                 <ul>
@@ -1468,15 +1489,29 @@ void startCarThread(){
                 <ul>
                   <li>Udfordring</li>
                   <ul>
-                    <li>Behøver notifikation ved ændring</li>
-                    <li>En-til-mange forhold - broadcasting</li>
+                    <li>Behøver løs kobling</li>
+                    <li>Fjerne nødvendigheden med kendskab til forskellige objekter (MsgQueues)</li>
                   </ul>
                   <li>Mulig løsning</li>
                   <ul>
-                    <li>Publisher/subscriber (eller observatør)</li>
+                    <li>Mediator</li>
                   </ul>
                   <li>Brug</li>
+                  <ul>
+                    <li>MDS</li>
+                    <li>Grafik system - draw() kald er sendt til interreserede parter</li>
+                    <li>PostOffice</li>
+                  </ul>
+                  <li>Fordele</li>
+                  <ul>
+                    <li>Centraliserer kontrol</li>
+                    <li>Focuserer på hvordan objekter interagerer og ikke på adfærd</li>
+                    <li>Enheder behøver ikke kende til hinanden</li>
+                  </ul>
                   <li>Ulemper</li>
+                  <ul>
+                    <li>Centraliserer kontrol</li>
+                  </ul>
                 </ul>
               </div>
             </div>
@@ -1487,18 +1522,24 @@ void startCarThread(){
                 <p>
                   <strong>RAII</strong> står for
                   <strong>Resource Acquisition Is Initialization</strong>. Her
-                  wrapper du alle ressourcer i sit eget objekt, der håndterer
+                  indkapsler du alle ressourcer i sit eget objekt, der håndterer
                   deres livstid og putter objekten på stacken. Det hjælper med,
-                  at spare på hukommelsen. OOgså på mutexes hjælper det med at
-                  undgå deadlocks
+                  at spare på hukommelsen. Også på mutexes hjælper det med at
+                  undgå deadlocks. Hvordan ved jeg ikke lige helt men det var noget der blev sagt i chatten så det må være rigtigt.
                 </p>
                 <h3>Copy construction and the assignment operator</h3>
               </div>
               <div class="right">
                 <h3>What is the concept behind a Counted SmartPointer?</h3>
+                <p>En counted smartpointer er en type af smart pointer der håndterer livstiden for et objekt gennem reference counting. Den sikrer at objekter sikkert bliver slettet, når der ikke længere er brug for dem
+                  Når reference count er på 0, betyder det altså at der ikke er flere der peget på objektet, og det kan derfor sikkert slettes, så du ikke bruger unødvendig plads og ressourcer.
+                </p>
                 <h3>
                   What is boost::shared_ptr&lt;&gt; and how do you use it?
                 </h3>
+                <p>boost::shared_ptr er smart i forhold tilressource håndtering, da den rydder op for dig når du forlade scope. Du behøver altså ikke tænke på, om du har slettet dine objekter
+                  når du ikke skal bruge dem mere. Det er en counted smartpointer, som altså håndterer livstiden for objekter.
+                </p>
               </div>
             </div>
           </div>
