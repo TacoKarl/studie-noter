@@ -1528,6 +1528,15 @@ void startCarThread(){
                   undgå deadlocks. Hvordan ved jeg ikke lige helt men det var noget der blev sagt i chatten så det må være rigtigt.
                 </p>
                 <h3>Copy construction and the assignment operator</h3>
+                <p>Copy construction og assignment operator er dele af "the rule of three" som er en tommelfingerregel i C++. Den består af <strong>Destructor, Copy constructor</strong> og <strong>Coppy assignment operator</strong>. 
+                De er specielle member functions i en klasse. Skal du have én, skal du have alle. Altså du skal altid have disse tre. "The rule of five" har samme princip, med samme funktioner, bare to ekstra, som er:
+              <strong>Move constructor</strong> og <strong>move assignment operator</strong>, som vi ikke vil gå i dybden med.</p>
+              <ul>
+                <li><strong>Destructor</strong> - Kalder en destructor af alle objektets klasse-type medlemmer</li>
+                <li><strong>Copy constructor</strong> - Konstruerer alle objektets medlemmer fra de korresponderende medlemmer af argumentet. Du kalder altså en copy constructor for objektets klasse-type medlemmer
+                og en normal assignment af alle ikke-klasse-type medlemmer</li>
+                <li><strong>Copy assignment operator</strong> - Gør basically det samme, men implementeres lidt anderledes. Her sørger du dog for at slette alt eksisterende data på dit objekt inden du kopierer</li>
+              </ul>
               </div>
               <div class="right">
                 <h3>What is the concept behind a Counted SmartPointer?</h3>
@@ -1537,7 +1546,7 @@ void startCarThread(){
                 <h3>
                   What is boost::shared_ptr&lt;&gt; and how do you use it?
                 </h3>
-                <p>boost::shared_ptr er smart i forhold tilressource håndtering, da den rydder op for dig når du forlade scope. Du behøver altså ikke tænke på, om du har slettet dine objekter
+                <p>boost::shared_ptr er smart i forhold til ressource håndtering, da den rydder op for dig når du forlade scope. Du behøver altså ikke tænke på, om du har slettet dine objekter
                   når du ikke skal bruge dem mere. Det er en counted smartpointer, som altså håndterer livstiden for objekter.
                 </p>
               </div>
